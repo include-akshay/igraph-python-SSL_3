@@ -15,6 +15,5 @@ g.addEdge(4, 6)
 
 print(f"These are the nodes that the network admin should send the message inorder to find the minimum number of nodes to send a message inorder to get it broadcasted :  " + str(g.nodes_for_broadcasting()))
 print("")
-print("A new function will arrive")
 # print("Cliques of size three in the provided graph are : "+str(ig.findCliques(0, 1, 3)))
 
