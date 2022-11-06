@@ -1,21 +1,43 @@
 from collections import defaultdict
+
 class Number_of_sources:
+    """It finds the names of the nodes,the network admin should send a message 
+    in order to get it broadcasted to all the nodes/users/systems in the provided 
+    network.
+    This is to help a network admin by getting his/her work get minimized by providing
+    them the least number of node names to send a message"""
   
-    """to iniialize the class object with the number of vertices asked by 
-    the user and also create an adjacency list"""
+    
     def __init__(self,vertices):
+        """to iniialize the class object with the number of vertices asked by 
+        the user and also create an adjacency list.
+        @param vertices : It is the number of vertices in the graph that 
+        is to be analysed and it is supposed to be provided by the user when creating
+        a object of the class. """
         self.V= vertices 
         self.graph = defaultdict(list)
         
-    """to add edges provided by the user in the adjacancy list"""
+    
     def addEdge(self,u,v):
+        """to add edges provided by the user in the adjacancy list.
+        @param u : The souce node.
+        
+        @param v : The destination node."""
         self.graph[u].append(v)
 
-    """this is inorder to perform DFS on the given graph and push the nodes 
-    in the stack according to their post order numbering
-    and which will be used later on to convert the provided graph with it's 
-    reverse graph"""
+    
     def explore(self,v,visited, stack):
+        """this is inorder to perform DFS on the given graph and push the nodes 
+        in the stack according to their post order numbering.
+        And which will be used later on to convert the provided graph with it's 
+        reverse graph.
+        @param v: the node whose expolration is supposed to be done
+
+        @param visited : the array to keep check if a certain has been visited already
+                in order to avoid into getting infinite loops
+
+        @ param stack : a stack for us to keep track of the nodes according to their
+                post numbers"""
         visited[v]= True
         for i in self.graph[v]:
             if visited[i]==False:
@@ -24,12 +46,15 @@ class Number_of_sources:
         stack = stack.append(v)
 
 
-    """This is method which is used to reverse graph G=(V, E) to G=(V',E'). 
-    Such that for every edge (u,v) in E, there will exist an edge(v,u) in 
-    E' in G'.
-    This way we can have reverse graph and will be used later on to decide the 
-    requirements of the class"""
+    
     def reverse_graph(self):
+        """This is method which is used to reverse graph G=(V, E) to G=(V',E'). 
+        Such that for every edge (u,v) in E, there will exist an edge(v,u) in 
+        E' in G'.
+        This way we can have reverse graph which will be used later on to decide the 
+        requirements of the class
+        @param : self, it is the object that called this function
+        @return : reversed Graph G' """
         g = Number_of_sources(self.V)
  
 
@@ -38,7 +63,19 @@ class Number_of_sources:
                 g.addEdge(j,i)
         return g
 
+    
     def SCC_helper(self,v,visited):
+        """This method tells the main function which are the Strongly connected components
+        So that it can get hand on the nodes to which the admin should send the msg inorder
+        to get it broadcasted
+        
+        @param v : node through which we will do the exploration on the reversed graph
+        
+        @param visited :the array to keep check if a certain has been visited already
+                         in order to avoid into getting infinite loops.
+        
+        @return : A list which contains all the nodes of a specific Strongly Connected 
+                  component."""
         visited[v]= True
         main_list=[]
         for i in self.graph[v]:
@@ -49,11 +86,15 @@ class Number_of_sources:
         main_list.append(v)
         return main_list
 
-    """This is the main method which would be called by the user in order to get 
-    results for the query : How many nodes should the network admin send a message 
-    in order to get it broadcasted to all the nodes/users/systems in the provided 
-    network."""
+    
     def nodes_for_broadcasting(self):
+        """This is the main method which would be called by the user in order to get 
+        results for the query : How many nodes should the network admin send a message 
+        in order to get it broadcasted to all the nodes/users/systems in the provided 
+        network.
+        
+        @returns : prints the names of the nodes to whom the network admin should send
+        the message inorder to get the message broadcasted"""
          
         stack = []
         visited =[False]*(self.V)
