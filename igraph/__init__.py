@@ -72,6 +72,7 @@ from igraph._igraph import (
     set_random_number_generator,
     set_status_handler,
     __igraph_version__,
+
 )
 from igraph.adjacency import (
     _get_adjacency,
@@ -83,14 +84,14 @@ from igraph.adjacency import (
 from igraph.No_of_nodes_for_broadcast import (
     Number_of_sources,
 )
-from igraph.clique import (
+# from igraph.clique import (
 
-    is_clique,
-    print_cli,
-    findCliques,
+#     is_clique,
+#     print_cli,
+#     findCliques,
     
 
-)
+# )
 from igraph.automorphisms import (
     _count_automorphisms_vf2,
     _get_automorphisms_vf2,
@@ -1210,7 +1211,11 @@ __all__ = (
     'summary',
     'union',
     'write',
-    'Number_of_sources'
+    'Number_of_sources',
+    # 'is_clique',
+    # 'findCliques',
+    # 'print_cli',
+
 
     # enums and stuff
     'ADJ_DIRECTED',
