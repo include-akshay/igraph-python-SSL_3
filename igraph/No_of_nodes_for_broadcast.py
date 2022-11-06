@@ -56,3 +56,12 @@ class Number_of_sources:
         leader=[]
         for i in range (0, self.V):
             leader.append(i)
+
+        while stack:
+           
+            i = stack.pop()
+            #print(i)
+            if visited[i]==False:
+                list=gr.reverse_helper(i, visited)
+                for j in list:
+                    leader[j] =list[0]
