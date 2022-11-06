@@ -62,6 +62,14 @@ class Number_of_sources:
             i = stack.pop()
             #print(i)
             if visited[i]==False:
-                list=gr.reverse_helper(i, visited)
+                list=gr.SCC_helper(i, visited)
                 for j in list:
                     leader[j] =list[0]
+
+        hash=[0]*(self.V)
+        for i in range(self.V):
+            for j in self.graph[i]:
+                if (leader[i]!=leader[j]):
+                    for k in range(0, len(leader)):
+                        if (leader[k]==leader[j]):
+                            hash[k]+=1
