@@ -38,6 +38,17 @@ class Number_of_sources:
                 g.addEdge(j,i)
         return g
 
+    def SCC_helper(self,v,visited):
+        visited[v]= True
+        main_list=[]
+        for i in self.graph[v]:
+            if visited[i]==False:
+                list=self.DFSUtil(i,visited)
+                for j in list:
+                    main_list.append(j)
+        main_list.append(v)
+        return main_list
+
     """This is the main method which would be called by the user in order to get 
     results for the query : How many nodes should the network admin send a message 
     in order to get it broadcasted to all the nodes/users/systems in the provided 
