@@ -84,6 +84,10 @@ from igraph.adjacency import (
 from igraph.No_of_nodes_for_broadcast import (
     Number_of_sources,
 )
+
+from igraph.greedy_chromatic_number import (
+    chromatic_number_greedy,
+)
 # from igraph.clique import (
 
 #     is_clique,
