@@ -9,3 +9,13 @@ class Number_of_sources:
     # to add edges provided by the user in the adjacancy list
     def addEdge(self,u,v):
         self.graph[u].append(v)
+
+    """this is inorder to perform DFS on the given graph and push the nodes in the stack according to their post order numbering
+    and which will be used later on to convert the provided graph with it's reverse graph"""
+    def explore(self,v,visited, stack):
+        visited[v]= True
+        for i in self.graph[v]:
+            if visited[i]==False:
+                self.explore(i, visited, stack)
+
+        stack = stack.append(v)
