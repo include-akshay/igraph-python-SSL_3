@@ -17,5 +17,15 @@ print(f"These are the nodes that the network admin should send the message inord
 print("")
 # print("Cliques of size three in the provided graph are : "+str(ig.findCliques(0, 1, 3)))
 
+#creating a graph and calling coloring method
+c = ig.chromatic_number_greedy(5)
+c.addEdge(0, 1)
+c.addEdge(0, 2)
+c.addEdge(1, 2)
+c.addEdge(1, 3)
+c.addEdge(2, 3)
+c.addEdge(3, 4)
+print("Coloring of graph 1 ")
+c.greedyColoring()
 
 
