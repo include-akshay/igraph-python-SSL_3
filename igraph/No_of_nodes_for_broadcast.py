@@ -1,12 +1,13 @@
 from collections import defaultdict
 class Number_of_sources:
   
-    # to iniialize the class object with the number of vertices asked by the user and also create an adjacency list
+    """to iniialize the class object with the number of vertices asked by 
+    the user and also create an adjacency list"""
     def __init__(self,vertices):
         self.V= vertices 
         self.graph = defaultdict(list)
         
-    # to add edges provided by the user in the adjacancy list
+    """to add edges provided by the user in the adjacancy list"""
     def addEdge(self,u,v):
         self.graph[u].append(v)
 
@@ -36,3 +37,15 @@ class Number_of_sources:
             for j in self.graph[i]:
                 g.addEdge(j,i)
         return g
+
+    """This is the main method which would be called by the user in order to get 
+    results for the query : How many nodes should the network admin send a message 
+    in order to get it broadcasted to all the nodes/users/systems in the provided 
+    network."""
+    def print_nodes_for_broadcasting(self):
+         
+        stack = []
+        visited =[False]*(self.V)
+        for i in range( self.V ):
+            if visited[i]==False:
+                self.explore( i, visited, stack )
