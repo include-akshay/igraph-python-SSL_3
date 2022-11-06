@@ -73,3 +73,12 @@ class Number_of_sources:
                     for k in range(0, len(leader)):
                         if (leader[k]==leader[j]):
                             hash[k]+=1
+
+        no_incoming_edge=[]
+        for i in range(0, len(hash)):
+            if(hash[i]==0):
+                no_incoming_edge.append(leader[i])  
+
+        no_incoming_edge=set(no_incoming_edge)
+        for i in no_incoming_edge:
+            print (i)
