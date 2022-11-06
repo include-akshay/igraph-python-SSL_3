@@ -17,6 +17,16 @@ class chromatic_number_greedy:
         self.V= vertices 
         self.adj = defaultdict(list)
 
+    def addEdge(self, v, w):
+	
+            self.adj[v].append(w)
+            self.adj[w].append(v)
+            
+
+# Assigns colors (starting from 0) to all
+# vertices and prints the assignment of colors
+
+
    
 
 
