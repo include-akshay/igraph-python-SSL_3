@@ -42,10 +42,17 @@ class Number_of_sources:
     results for the query : How many nodes should the network admin send a message 
     in order to get it broadcasted to all the nodes/users/systems in the provided 
     network."""
-    def print_nodes_for_broadcasting(self):
+    def nodes_for_broadcasting(self):
          
         stack = []
         visited =[False]*(self.V)
         for i in range( self.V ):
             if visited[i]==False:
                 self.explore( i, visited, stack )
+        
+        gr = self.reverse_graph()
+
+        visited =[False]*(self.V)
+        leader=[]
+        for i in range (0, self.V):
+            leader.append(i)
