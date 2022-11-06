@@ -1216,6 +1216,7 @@ __all__ = (
     'union',
     'write',
     'Number_of_sources',
+    'chromatic_number_greedy',
     # 'is_clique',
     # 'findCliques',
     # 'print_cli',

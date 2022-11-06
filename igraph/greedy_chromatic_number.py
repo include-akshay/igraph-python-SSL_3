@@ -25,7 +25,7 @@ class chromatic_number_greedy:
 
 # Assigns colors (starting from 0) to all
 # vertices and prints the assignment of colors
-def greedyColoring(self):
+    def greedyColoring(self):
         
         result = [-1] * self.V
 
