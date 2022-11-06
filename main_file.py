@@ -12,4 +12,4 @@ g.addEdge(3, 7)
 g.addEdge(4, 6)
 
 
-g.printSCCs()
+g.nodes_for_broadcasting()
