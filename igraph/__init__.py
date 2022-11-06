@@ -80,7 +80,9 @@ from igraph.adjacency import (
     _get_incidence,
     _get_inclist,
 )
-
+from igraph.No_of_nodes_for_broadcast import (
+    Number_of_sources,
+)
 from igraph.clique import (
 
     is_clique,
