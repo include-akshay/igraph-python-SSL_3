@@ -140,5 +140,4 @@ class Number_of_sources:
                 no_incoming_edge.append(leader[i])  
 
         no_incoming_edge=set(no_incoming_edge)
-        for i in no_incoming_edge:
-            print (i)
+        return(no_incoming_edge)

@@ -12,9 +12,10 @@ g.addEdge(3, 6)
 g.addEdge(3, 7)
 g.addEdge(4, 6)
 
-
-print(f"These are the nodes that the network admin should send the message inorder to find the minimum number of nodes to send a message inorder to get it broadcasted :  " + str(g.nodes_for_broadcasting()))
+print(f"These are the nodes that the network admin should send the message inorder to find the minimum number of nodes to send a message inorder to get it broadcasted :  " )
 print("")
+source_list=g.nodes_for_broadcasting()
+print(source_list)
 # print("Cliques of size three in the provided graph are : "+str(ig.findCliques(0, 1, 3)))
 
 #creating a graph and calling coloring method
