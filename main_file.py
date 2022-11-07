@@ -12,20 +12,25 @@ g.addEdge(3, 6)
 g.addEdge(3, 7)
 g.addEdge(4, 6)
 
-
-print(f"These are the nodes that the network admin should send the message inorder to find the minimum number of nodes to send a message inorder to get it broadcasted :  " + str(g.nodes_for_broadcasting()))
 print("")
+print("These are the nodes that the network admin should send the message inorder to find the minimum number of nodes to send a message inorder to get it broadcasted :  " )
+print("")
+source_list=g.nodes_for_broadcasting()
+print(source_list)
 # print("Cliques of size three in the provided graph are : "+str(ig.findCliques(0, 1, 3)))
 
-#creating a graph and calling coloring method
-c = ig.chromatic_number_greedy(5)
+#creating a graph and frquency band method
+c = ig.minimum_frequency_bands(5)
 c.addEdge(0, 1)
 c.addEdge(0, 2)
 c.addEdge(1, 2)
 c.addEdge(1, 3)
 c.addEdge(2, 3)
 c.addEdge(3, 4)
-print("Coloring of graph 1 ")
-c.greedyColoring()
+print("")
+print("Assigning Frequency to network: ")
+print("")
+list_2nd=c.frequency_band()
+print(list_2nd)
 
 
