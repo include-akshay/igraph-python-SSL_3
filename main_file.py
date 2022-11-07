@@ -31,6 +31,7 @@ print("")
 print("Assigning Frequency to network: ")
 print("")
 list_2nd=c.frequency_band()
+
 print(list_2nd)
 
 
