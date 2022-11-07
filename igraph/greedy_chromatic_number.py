@@ -54,8 +54,7 @@ class chromatic_number_greedy:
                     available[result[i]] = False
 
         # Print the result
-        for u in range(self.V):
-            print("Vertex", u, " ---> Color", result[u])
+        return (result)
 
    
 

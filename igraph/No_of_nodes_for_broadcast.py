@@ -101,7 +101,7 @@ class Number_of_sources:
         in order to get it broadcasted to all the nodes/users/systems in the provided 
         network.
         
-        @returns : prints the names of the nodes to whom the network admin should send
+        @returns : the names of the nodes to whom the network admin should send
         the message inorder to get the message broadcasted"""
          
         stack = []
