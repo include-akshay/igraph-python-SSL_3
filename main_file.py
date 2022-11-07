@@ -19,8 +19,8 @@ source_list=g.nodes_for_broadcasting()
 print(source_list)
 # print("Cliques of size three in the provided graph are : "+str(ig.findCliques(0, 1, 3)))
 
-#creating a graph and calling coloring method
-c = ig.chromatic_number_greedy(5)
+#creating a graph and frquency band method
+c = ig.minimum_frequency_bands(5)
 c.addEdge(0, 1)
 c.addEdge(0, 2)
 c.addEdge(1, 2)
@@ -28,9 +28,10 @@ c.addEdge(1, 3)
 c.addEdge(2, 3)
 c.addEdge(3, 4)
 print("")
-print("Coloring of graph 1 ")
+print("Assigning Frequency to network: ")
 print("")
-list_2nd=c.greedyColoring()
+list_2nd=c.frequency_band()
+
 print(list_2nd)
 
 
