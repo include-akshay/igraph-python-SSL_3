@@ -20,7 +20,8 @@ class AttributeTest(unittest.TestCase):
         self.assertDictEqual(reverse_list.__dict__['graph'],{1: [0], 2: [0, 1], 3: [1, 2], 4: [3]},"Unequal dict")
 
 
- 
+    def test_nodes(self):
+
 
 
 
