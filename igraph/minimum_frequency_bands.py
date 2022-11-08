@@ -75,8 +75,6 @@ class minimum_frequency_bands:
                 if (result[i] != -1):
                     available[result[i]] = False
 
-        # Print the result
-        for u in range(self.V):
-            print("Vertex", u, " ---> Color", result[u])
+        return(len(set(result)), result)
 
 
