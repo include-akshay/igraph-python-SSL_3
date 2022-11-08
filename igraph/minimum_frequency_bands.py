@@ -75,6 +75,6 @@ class minimum_frequency_bands:
                 if (result[i] != -1):
                     available[result[i]] = False
 
-        return(result)
+        return(len(set(result)))
 
 
