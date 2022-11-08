@@ -1,6 +1,5 @@
 import igraph as ig
 
-
 g = ig.Number_of_sources(8)
 g.addEdge(0, 3)
 g.addEdge(0, 4)
