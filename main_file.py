@@ -26,7 +26,8 @@ c.addEdge(1, 3)
 c.addEdge(2, 3)
 c.addEdge(3, 4)
 print("")
-print("Least Number of frequencies required are : "+str(c.frequency_band()))
+number_of_bands, freq_to_nodes=c.frequency_band()
+print("Least Number of frequencies required are : "+str(number_of_bands))
 
 
 
