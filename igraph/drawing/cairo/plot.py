@@ -95,6 +95,11 @@ class CairoPlot:
         palette=None,
         background=None,
     ):
+        print("Hello, we caught you ?? ")
+        # yes_or_no=input("Do you want to save the plot also (y/n) : ")
+        # if(yes_or_no== 'Y' or yes_or_no=='y'):
+        #     self.write_svg("save_svg_test_3")
+
         """Creates a new plot.
 
         @param target: the target surface to write to. It can be one of the

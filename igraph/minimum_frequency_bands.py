@@ -1,10 +1,11 @@
 # algorithm for graph coloring
 from collections import defaultdict
+import igraph as ig 
+
 
 __all__ =(
 "addEdge",
-"frequency_band"
-,
+"frequency_band",
 )
 class minimum_frequency_bands:
    
@@ -17,6 +18,9 @@ class minimum_frequency_bands:
         a object of the class. """
         self.V= vertices 
         self.adj = defaultdict(list)
+        self.graph_to_plot=ig.Graph()
+        for i in range(0, self.V):
+            self.graph_to_plot.add_vertex(chr(ord('a')+i))
 
     def addEdge(self, v, w):
          """to add the edges provided by the user in the adjacency list.
@@ -27,6 +31,7 @@ class minimum_frequency_bands:
          """
          self.adj[v].append(w)
          self.adj[w].append(v)
+         self.graph_to_plot.add_edge(chr(ord('a')+v),chr(ord('a')+w))
             
 
 # Assigns colors (starting from 0) to all
@@ -75,6 +80,10 @@ class minimum_frequency_bands:
                 if (result[i] != -1):
                     available[result[i]] = False
 
-        return(len(set(result)), result)
+        layout = self.graph_to_plot.layout_kamada_kawai()
+        color_dict={0: "blue",1:"red",2:"green",3:"yellow", 4:"white", 5:"balck" }
+        ig.plot(self.graph_to_plot,layout = layout,vertex_color =[color_dict[i] for i in result])
+
+        return(len(set(result)), result, self.graph_to_plot)
 
 
