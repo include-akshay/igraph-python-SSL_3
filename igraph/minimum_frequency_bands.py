@@ -49,6 +49,8 @@ class minimum_frequency_bands:
                             color cr is assigned to one of its adjacent vertices.
                             initially initialize with False.
         
+        @return : It returns the number of bands required, a graph object which will help in saving the file.
+                  and finally a list which tells the color of the node.
         """
         
         result = [-1] * self.V
