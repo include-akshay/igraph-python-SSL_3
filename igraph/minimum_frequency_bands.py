@@ -1,7 +1,7 @@
 # algorithm for graph coloring
 from collections import defaultdict
 import igraph as ig 
-
+import datetime
 
 __all__ =(
 "addEdge",
@@ -81,9 +81,17 @@ class minimum_frequency_bands:
                     available[result[i]] = False
 
         layout = self.graph_to_plot.layout_kamada_kawai()
-        color_dict={0: "blue",1:"red",2:"green",3:"yellow", 4:"white", 5:"balck" }
-        ig.plot(self.graph_to_plot,layout = layout,vertex_color =[color_dict[i] for i in result])
+        color_dict={0: "blue",1:"red",2:"green",3:"yellow", 4:"white", 5:"balck" }  
+        
+        yes_or_no=input("Do you want to save the graph as well :: (y/n)")
+        if yes_or_no == 'y' or yes_or_no=='Y':
+            name_of_svg=str(datetime.datetime.now())
+            name_of_svg=name_of_svg.replace(" ", "")
+            name_of_svg=name_of_svg.replace("-", "")
+            name_of_svg=name_of_svg.replace(".", "")
+            name_of_svg=name_of_svg.replace(":", "")
+            
+            #f=open("graph1.svg", "x")
+            self.graph_to_plot.write_svg(f"file{name_of_svg}.svg", layout=layout, colors =[color_dict[i] for i in result])
 
         return(len(set(result)), result, self.graph_to_plot)
-
-

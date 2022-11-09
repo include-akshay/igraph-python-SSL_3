@@ -88,6 +88,9 @@ from igraph.No_of_nodes_for_broadcast import (
 from igraph.minimum_frequency_bands import (
     minimum_frequency_bands,
 )
+from igraph.node_coloring import(
+    Node_coloring,
+)
 # from igraph.clique import (
 
 #     is_clique,
@@ -1217,6 +1220,7 @@ __all__ = (
     'write',
     'Number_of_sources',
     'minimum_frequency_bands',
+    'Node_coloring',
     # 'is_clique',
     # 'findCliques',
     # 'print_cli',

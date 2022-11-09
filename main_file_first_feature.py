@@ -32,9 +32,13 @@ graph1.addEdge(0,9)
 print("")
 number_of_bands, freq_to_nodes, graph_to_plot=graph1.frequency_band()
 print("Least Number of frequencies required are : "+str(number_of_bands))
-# layout = graph_to_plot.layout_kamada_kawai()
-# color_dict={0: "blue",1:"red",2:"green",3:"yellow", 4:"white", 5:"balck" }
-# plot(graph_to_plot,layout = layout,vertex_color =[color_dict[i] for i in freq_to_nodes])
+layout = graph_to_plot.layout_kamada_kawai()
+color_dict={0: "blue",1:"red",2:"green",3:"yellow", 4:"white", 5:"balck" }
+plot(graph_to_plot,layout = layout,vertex_color =[color_dict[i] for i in freq_to_nodes])
+
+
+
+
 
 
 
