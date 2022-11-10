@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.statistics &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">igraph</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>igraph.statistics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for igraph.statistics</h1><div class="highlight"><pre>
+<span></span><span class="c1"># vim:ts=4:sw=4:sts=4:et</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Statistics related stuff in igraph</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;FittedPowerLaw&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Histogram&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RunningMean&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;median&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;percentile&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;quantile&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;power_law_fit&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="FittedPowerLaw"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.FittedPowerLaw">[docs]</a><span class="k">class</span> <span class="nc">FittedPowerLaw</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Result of fitting a power-law to a vector of samples</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; result = power_law_fit([1, 2, 3, 4, 5, 6])</span>
+<span class="sd">        &gt;&gt;&gt; result                   # doctest:+ELLIPSIS</span>
+<span class="sd">        FittedPowerLaw(continuous=False, alpha=2.42..., xmin=3.0, L=-7.54..., \</span>
+<span class="sd">D=0.21..., p=0.993...)</span>
+<span class="sd">        &gt;&gt;&gt; print(result)            # doctest:+ELLIPSIS</span>
+<span class="sd">        Fitted power-law distribution on discrete data</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        Exponent (alpha)  = 2.42...</span>
+<span class="sd">        Cutoff (xmin)     = 3.000000</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        Log-likelihood    = -7.54...</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        H0: data was drawn from the fitted distribution</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        KS test statistic = 0.21...</span>
+<span class="sd">        p-value           = 0.993...</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        H0 could not be rejected at significance level 0.05</span>
+<span class="sd">        &gt;&gt;&gt; result.alpha             # doctest:+ELLIPSIS</span>
+<span class="sd">        2.42...</span>
+<span class="sd">        &gt;&gt;&gt; result.xmin</span>
+<span class="sd">        3.0</span>
+<span class="sd">        &gt;&gt;&gt; result.continuous</span>
+<span class="sd">        False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">continuous</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continuous</span> <span class="o">=</span> <span class="n">continuous</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span> <span class="o">=</span> <span class="n">xmin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(continuous=</span><span class="si">%r</span><span class="s2">, alpha=</span><span class="si">%r</span><span class="s2">, xmin=</span><span class="si">%r</span><span class="s2">, L=</span><span class="si">%r</span><span class="s2">, D=</span><span class="si">%r</span><span class="s2">, p=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">continuous</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">significance</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FittedPowerLaw.summary"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.FittedPowerLaw.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">significance</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the summary of the power law fit.</span>
+
+<span class="sd">        @param significance: the significance level of the Kolmogorov-Smirnov test</span>
+<span class="sd">          used to decide whether the input data could have come from the fitted</span>
+<span class="sd">          distribution</span>
+<span class="sd">        @return: the summary as a string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Fitted power-law distribution on </span><span class="si">%s</span><span class="s2"> data&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;discrete&quot;</span><span class="p">,</span> <span class="s2">&quot;continuous&quot;</span><span class="p">)[</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">continuous</span><span class="p">)]</span>
+        <span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Exponent (alpha)  = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Cutoff (xmin)     = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Log-likelihood    = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;H0: data was drawn from the fitted distribution&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;KS test statistic = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;p-value           = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">&lt;</span> <span class="n">significance</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;H0 rejected at significance level </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">significance</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;H0 could not be rejected at significance &quot;</span> <span class="s2">&quot;level </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">significance</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Histogram"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.Histogram">[docs]</a><span class="k">class</span> <span class="nc">Histogram</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generic histogram class for real numbers</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; h = Histogram(5)     # Initializing, bin width = 5</span>
+<span class="sd">        &gt;&gt;&gt; h &lt;&lt; [2,3,2,7,8,5,5,0,7,9]     # Adding more items</span>
+<span class="sd">        &gt;&gt;&gt; print(h)</span>
+<span class="sd">        N = 10, mean +- sd: 4.8000 +- 2.9740</span>
+<span class="sd">        [ 0,  5): **** (4)</span>
+<span class="sd">        [ 5, 10): ****** (6)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes the histogram with the given data set.</span>
+
+<span class="sd">        @param bin_width: the bin width of the histogram.</span>
+<span class="sd">        @param data: the data set to be used. Must contain real numbers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">bin_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span> <span class="o">=</span> <span class="n">RunningMean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_many</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the bin index corresponding to the given number.</span>
+
+<span class="sd">        @param num: the number for which the bin is being sought</span>
+<span class="sd">        @param create: whether to create a new bin if no bin exists yet.</span>
+<span class="sd">        @return: the index of the bin or C{None} if no bin exists yet and</span>
+<span class="sd">          {create} is C{False}.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">:</span>
+            <span class="n">binidx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">num</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">binidx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">binidx</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="n">extra_bins</span> <span class="o">=</span> <span class="n">binidx</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">extra_bins</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+            <span class="k">return</span> <span class="n">binidx</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">create</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">extra_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">-</span> <span class="n">num</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">extra_bins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">-=</span> <span class="n">extra_bins</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the number of elements in the histogram&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the mean of the elements in the histogram&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span><span class="o">.</span><span class="n">mean</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the standard deviation of the elements in</span>
+<span class="sd">        the histogram&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span><span class="o">.</span><span class="n">sd</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">var</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the variance of the elements in the histogram&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span><span class="o">.</span><span class="n">var</span>
+
+<div class="viewcode-block" id="Histogram.add"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.Histogram.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a single number to the histogram.</span>
+
+<span class="sd">        @param num: the number to be added</span>
+<span class="sd">        @param repeat: number of repeated additions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="n">binidx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bin</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">[</span><span class="n">binidx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">repeat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">repeat</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Histogram.add_many"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.Histogram.add_many">[docs]</a>    <span class="k">def</span> <span class="nf">add_many</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a single number or the elements of an iterable to the histogram.</span>
+
+<span class="sd">        @param data: the data to be added&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">([</span><span class="n">data</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+    <span class="fm">__lshift__</span> <span class="o">=</span> <span class="n">add_many</span>
+
+<div class="viewcode-block" id="Histogram.clear"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.Histogram.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clears the collected data&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running_mean</span> <span class="o">=</span> <span class="n">RunningMean</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Histogram.bins"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.Histogram.bins">[docs]</a>    <span class="k">def</span> <span class="nf">bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generator returning the bins of the histogram in increasing order</span>
+
+<span class="sd">        @return: a tuple with the following elements: left bound, right bound,</span>
+<span class="sd">          number of elements in the bin&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span></div>
+
+    <span class="k">def</span> <span class="nf">__plot__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plotting support&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">igraph.drawing</span> <span class="kn">import</span> <span class="n">DrawerDirectory</span>
+
+        <span class="n">drawer</span> <span class="o">=</span> <span class="n">DrawerDirectory</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">)(</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">drawer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Histogram.to_string"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.Histogram.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">78</span><span class="p">,</span> <span class="n">show_bars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the string representation of the histogram.</span>
+
+<span class="sd">        @param max_width: the maximal width of each line of the string</span>
+<span class="sd">          This value may not be obeyed if it is too small.</span>
+<span class="sd">        @param show_bars: specify whether the histogram bars should be shown</span>
+<span class="sd">        @param show_counts: specify whether the histogram counts should be</span>
+<span class="sd">          shown. If both I{show_bars} and I{show_counts} are C{False},</span>
+<span class="sd">          only a general descriptive statistics (number of elements, mean and</span>
+<span class="sd">          standard deviation) is shown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;N = 0&quot;</span>
+
+        <span class="c1"># Determine how many decimal digits should we use</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_width</span><span class="p">:</span>
+            <span class="n">number_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">number_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span>
+        <span class="n">num_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">number_format</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">number_format</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="p">))</span>
+        <span class="n">number_format</span> <span class="o">=</span> <span class="s2">&quot;%&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_length</span><span class="p">)</span> <span class="o">+</span> <span class="n">number_format</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">format_string</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">): </span><span class="si">%%</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">number_format</span><span class="p">,</span> <span class="n">number_format</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the scale of the bars on the histogram</span>
+        <span class="k">if</span> <span class="n">show_bars</span><span class="p">:</span>
+            <span class="n">maxval</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bins</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">show_counts</span><span class="p">:</span>
+                <span class="n">maxval_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">maxval</span><span class="p">))</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="n">maxval</span> <span class="o">//</span> <span class="p">(</span><span class="n">max_width</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_length</span> <span class="o">-</span> <span class="n">maxval_length</span> <span class="o">-</span> <span class="mi">9</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="n">maxval</span> <span class="o">//</span> <span class="p">(</span><span class="n">max_width</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">num_length</span> <span class="o">-</span> <span class="mi">6</span><span class="p">)</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;N = </span><span class="si">%d</span><span class="s2">, mean +- sd: </span><span class="si">%.4f</span><span class="s2"> +- </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sd</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">show_bars</span><span class="p">:</span>
+            <span class="c1"># Print the bars</span>
+            <span class="k">if</span> <span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Each * represents </span><span class="si">%d</span><span class="s2"> items&quot;</span> <span class="o">%</span> <span class="n">scale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">show_counts</span><span class="p">:</span>
+                <span class="n">format_string</span> <span class="o">+=</span> <span class="s2">&quot; (</span><span class="si">%d</span><span class="s2">)&quot;</span>
+                <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">():</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">format_string</span> <span class="o">%</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">cnt</span> <span class="o">//</span> <span class="n">scale</span><span class="p">),</span> <span class="n">cnt</span><span class="p">)</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">():</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_string</span> <span class="o">%</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">cnt</span> <span class="o">//</span> <span class="n">scale</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">show_counts</span><span class="p">:</span>
+            <span class="c1"># Print the counts only</span>
+            <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">():</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_string</span> <span class="o">%</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">cnt</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RunningMean"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.RunningMean">[docs]</a><span class="k">class</span> <span class="nc">RunningMean</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Running mean calculator.</span>
+
+<span class="sd">    This class can be used to calculate the mean of elements from a</span>
+<span class="sd">    list, tuple, iterable or any other data source. The mean is</span>
+<span class="sd">    calculated on the fly without explicitly summing the values,</span>
+<span class="sd">    so it can be used for data sets with arbitrary item count. Also</span>
+<span class="sd">    capable of returning the standard deviation (also calculated on</span>
+<span class="sd">    the fly)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;RunningMean(items=None, n=0.0, mean=0.0, sd=0.0)</span>
+
+<span class="sd">        Initializes the running mean calculator.</span>
+
+<span class="sd">        There are two possible ways to initialize the calculator.</span>
+<span class="sd">        First, one can provide an iterable of items; alternatively,</span>
+<span class="sd">        one can specify the number of items, the mean and the</span>
+<span class="sd">        standard deviation if we want to continue an interrupted</span>
+<span class="sd">        calculation.</span>
+
+<span class="sd">        @param items: the items that are used to initialize the</span>
+<span class="sd">          running mean calcuator. If C{items} is given, C{n},</span>
+<span class="sd">          C{mean} and C{sd} must be zeros.</span>
+<span class="sd">        @param n: the initial number of elements already processed.</span>
+<span class="sd">          If this is given, C{items} must be C{None}.</span>
+<span class="sd">        @param mean: the initial mean. If this is given, C{items}</span>
+<span class="sd">          must be C{None}.</span>
+<span class="sd">        @param sd: the initial standard deviation. If this is given,</span>
+<span class="sd">          C{items} must be C{None}.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">items</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">mean</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">sd</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n, mean and sd must be zeros if items is not None&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_many</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sqdiff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sqdiff</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<div class="viewcode-block" id="RunningMean.add"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.RunningMean.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;RunningMean.add(value, repeat=1)</span>
+
+<span class="sd">        Adds the given value to the elements from which we calculate</span>
+<span class="sd">        the mean and the standard deviation.</span>
+
+<span class="sd">        @param value: the element to be added</span>
+<span class="sd">        @param repeat: number of repeated additions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">repeat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">repeat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span> <span class="o">+=</span> <span class="n">repeat</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span> <span class="o">+=</span> <span class="n">repeat</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sqdiff</span> <span class="o">+=</span> <span class="p">(</span><span class="n">repeat</span> <span class="o">*</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sqdiff</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span></div>
+
+<div class="viewcode-block" id="RunningMean.add_many"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.RunningMean.add_many">[docs]</a>    <span class="k">def</span> <span class="nf">add_many</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;RunningMean.add(values)</span>
+
+<span class="sd">        Adds the values in the given iterable to the elements from</span>
+<span class="sd">        which we calculate the mean. Can also accept a single number.</span>
+<span class="sd">        The left shift (C{&lt;&lt;}) operator is aliased to this function,</span>
+<span class="sd">        so you can use it to add elements as well:</span>
+
+<span class="sd">          &gt;&gt;&gt; rm=RunningMean()</span>
+<span class="sd">          &gt;&gt;&gt; rm &lt;&lt; [1,2,3,4]</span>
+<span class="sd">          &gt;&gt;&gt; rm.result               # doctest:+ELLIPSIS</span>
+<span class="sd">          (2.5, 1.290994...)</span>
+
+<span class="sd">        @param values: the element(s) to be added</span>
+<span class="sd">        @type values: iterable&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">([</span><span class="n">values</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunningMean.clear"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.RunningMean.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets the running mean calculator.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sqdiff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the current mean and standard deviation as a tuple&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the current mean&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the current standard deviation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">var</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the current variation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(n=</span><span class="si">%r</span><span class="s2">, mean=</span><span class="si">%r</span><span class="s2">, sd=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Running mean (N=</span><span class="si">%d</span><span class="s2">, </span><span class="si">%f</span><span class="s2"> +- </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sd</span><span class="p">)</span>
+
+    <span class="fm">__lshift__</span> <span class="o">=</span> <span class="n">add_many</span>
+
+    <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__complex__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nitems</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mean"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.mean">[docs]</a><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the mean of an iterable.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; mean([1, 4, 7, 11])</span>
+<span class="sd">        5.75</span>
+
+<span class="sd">    @param xs: an iterable yielding numbers.</span>
+<span class="sd">    @return: the mean of the numbers provided by the iterable.</span>
+
+<span class="sd">    @see: RunningMean() if you also need the variance or the standard deviation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">RunningMean</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span></div>
+
+
+<div class="viewcode-block" id="median"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.median">[docs]</a><span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the median of an unsorted or sorted numeric vector.</span>
+
+<span class="sd">    @param xs: the vector itself.</span>
+<span class="sd">    @param sort: whether to sort the vector. If you know that the vector is</span>
+<span class="sd">      sorted already, pass C{False} here.</span>
+<span class="sd">    @return: the median, which will always be a float, even if the vector</span>
+<span class="sd">      contained integers originally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+
+    <span class="n">mid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mid</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">xs</span><span class="p">[</span><span class="n">mid</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">mid</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="percentile"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.percentile">[docs]</a><span class="k">def</span> <span class="nf">percentile</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the pth percentile of an unsorted or sorted numeric vector.</span>
+
+<span class="sd">    This is equivalent to calling quantile(xs, p/100.0); see L{quantile}</span>
+<span class="sd">    for more details on the calculation.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; round(percentile([15, 20, 40, 35, 50], 40), 2)</span>
+<span class="sd">        26.0</span>
+<span class="sd">        &gt;&gt;&gt; for perc in percentile([15, 20, 40, 35, 50], (0, 25, 50, 75, 100)):</span>
+<span class="sd">        ...     print(&quot;%.2f&quot; % perc)</span>
+<span class="sd">        ...</span>
+<span class="sd">        15.00</span>
+<span class="sd">        17.50</span>
+<span class="sd">        35.00</span>
+<span class="sd">        45.00</span>
+<span class="sd">        50.00</span>
+
+<span class="sd">    @param xs: the vector itself.</span>
+<span class="sd">    @param p: the percentile we are looking for. It may also be a list if you</span>
+<span class="sd">      want to calculate multiple quantiles with a single call. The default</span>
+<span class="sd">      value calculates the 25th, 50th and 75th percentile.</span>
+<span class="sd">    @param sort: whether to sort the vector. If you know that the vector is</span>
+<span class="sd">      sorted already, pass C{False} here.</span>
+<span class="sd">    @return: the pth percentile, which will always be a float, even if the vector</span>
+<span class="sd">      contained integers originally. If p is a list, the result will also be a</span>
+<span class="sd">      list containing the percentiles for each item in the list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">quantile</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mf">100.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p</span><span class="p">),</span> <span class="n">sort</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quantile</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">p</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">sort</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="power_law_fit"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.power_law_fit">[docs]</a><span class="k">def</span> <span class="nf">power_law_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">p_precision</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fitting a power-law distribution to empirical data</span>
+
+<span class="sd">    @param data: the data to fit, a list containing integer values</span>
+<span class="sd">    @param xmin: the lower bound for fitting the power-law. If C{None},</span>
+<span class="sd">      the optimal xmin value will be estimated as well. Zero means that</span>
+<span class="sd">      the smallest possible xmin value will be used.</span>
+<span class="sd">    @param method: the fitting method to use. The following methods are</span>
+<span class="sd">      implemented so far:</span>
+
+<span class="sd">        - C{continuous}, C{hill}: exact maximum likelihood estimation</span>
+<span class="sd">          when the input data comes from a continuous scale. This is</span>
+<span class="sd">          known as the Hill estimator. The statistical error of</span>
+<span class="sd">          this estimator is M{(alpha-1) / sqrt(n)}, where alpha is the</span>
+<span class="sd">          estimated exponent and M{n} is the number of data points above</span>
+<span class="sd">          M{xmin}. The estimator is known to exhibit a small finite</span>
+<span class="sd">          sample-size bias of order M{O(n^-1)}, which is small when</span>
+<span class="sd">          M{n &gt; 100}. igraph will try to compensate for the finite sample</span>
+<span class="sd">          size if n is small.</span>
+
+<span class="sd">        - C{discrete}: exact maximum likelihood estimation when the</span>
+<span class="sd">          input comes from a discrete scale (see Clauset et al among the</span>
+<span class="sd">          references).</span>
+
+<span class="sd">        - C{auto}: exact maximum likelihood estimation where the continuous</span>
+<span class="sd">          method is used if the input vector contains at least one fractional</span>
+<span class="sd">          value and the discrete method is used if the input vector contains</span>
+<span class="sd">          integers only.</span>
+<span class="sd">    @param p_precision: desired precision of the p-value calculation. The</span>
+<span class="sd">      precision ultimately depends on the number of resampling attempts. The</span>
+<span class="sd">      number of resampling trials is determined by 0.25 divided by the square</span>
+<span class="sd">      of the required precision. For instance, a required precision of 0.01</span>
+<span class="sd">      means that 2500 samples will be drawn.</span>
+
+<span class="sd">    @return: a L{FittedPowerLaw} object. The fitted C{xmin} value and the</span>
+<span class="sd">      power-law exponent can be queried from the C{xmin} and C{alpha}</span>
+<span class="sd">      properties of the returned object.</span>
+
+<span class="sd">    @newfield ref: Reference</span>
+<span class="sd">    @ref: MEJ Newman: Power laws, Pareto distributions and Zipf&#39;s law.</span>
+<span class="sd">      Contemporary Physics 46, 323-351 (2005)</span>
+<span class="sd">    @ref: A Clauset, CR Shalizi, MEJ Newman: Power-law distributions</span>
+<span class="sd">      in empirical data. E-print (2007). arXiv:0706.1062</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">igraph._igraph</span> <span class="kn">import</span> <span class="n">_power_law_fit</span>
+
+    <span class="k">if</span> <span class="n">xmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">xmin</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">xmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;continuous&quot;</span><span class="p">,</span> <span class="s2">&quot;hill&quot;</span><span class="p">,</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;unknown method: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">method</span><span class="p">)</span>
+
+    <span class="n">force_continuous</span> <span class="o">=</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;continuous&quot;</span><span class="p">,</span> <span class="s2">&quot;hill&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">FittedPowerLaw</span><span class="p">(</span><span class="o">*</span><span class="n">_power_law_fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">force_continuous</span><span class="p">,</span> <span class="n">p_precision</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="quantile"><a class="viewcode-back" href="../../igraph.html#igraph.statistics.quantile">[docs]</a><span class="k">def</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the qth quantile of an unsorted or sorted numeric vector.</span>
+
+<span class="sd">    There are a number of different ways to calculate the sample quantile. The</span>
+<span class="sd">    method implemented by igraph is the one recommended by NIST. First we</span>
+<span class="sd">    calculate a rank n as q(N+1), where N is the number of items in xs, then we</span>
+<span class="sd">    split n into its integer component k and decimal component d. If k &lt;= 1,</span>
+<span class="sd">    we return the first element; if k &gt;= N, we return the last element,</span>
+<span class="sd">    otherwise we return the linear interpolation between xs[k-1] and xs[k]</span>
+<span class="sd">    using a factor d.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; round(quantile([15, 20, 40, 35, 50], 0.4), 2)</span>
+<span class="sd">        26.0</span>
+
+<span class="sd">    @param xs: the vector itself.</span>
+<span class="sd">    @param q: the quantile we are looking for. It may also be a list if you</span>
+<span class="sd">      want to calculate multiple quantiles with a single call. The default</span>
+<span class="sd">      value calculates the 25th, 50th and 75th percentile.</span>
+<span class="sd">    @param sort: whether to sort the vector. If you know that the vector is</span>
+<span class="sd">      sorted already, pass C{False} here.</span>
+<span class="sd">    @return: the qth quantile, which will always be a float, even if the vector</span>
+<span class="sd">      contained integers originally. If q is a list, the result will also be a</span>
+<span class="sd">      list containing the quantiles for each item in the list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">xs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;xs must not be empty&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="n">return_single</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="p">]</span>
+        <span class="n">return_single</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">q</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">q</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;q must be between 0 and 1&quot;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">n</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">xs</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">xs</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">return_single</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="k">def</span> <span class="nf">sd</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the standard deviation of an iterable.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; sd([1, 4, 7, 11])       #doctest:+ELLIPSIS</span>
+<span class="sd">        4.2720...</span>
+
+<span class="sd">    @param xs: an iterable yielding numbers.</span>
+<span class="sd">    @return: the standard deviation of the numbers provided by the iterable.</span>
+
+<span class="sd">    @see: RunningMean() if you also need the mean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">RunningMean</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">sd</span>
+
+
+<span class="k">def</span> <span class="nf">var</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the variance of an iterable.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; var([1, 4, 8, 11])            #doctest:+ELLIPSIS</span>
+<span class="sd">        19.333333...</span>
+
+<span class="sd">    @param xs: an iterable yielding numbers.</span>
+<span class="sd">    @return: the variance of the numbers provided by the iterable.</span>
+
+<span class="sd">    @see: RunningMean() if you also need the mean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">RunningMean</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">var</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

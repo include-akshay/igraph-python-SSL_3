@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.io package &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="igraph.operators package" href="igraph.operators.html" />
+    <link rel="prev" title="igraph.drawing.plotly package" href="igraph.drawing.plotly.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">igraph</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="igraph.html">igraph package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="igraph.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="igraph.app.html">igraph.app package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.html">igraph.drawing package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">igraph.io package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.operators.html">igraph.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.remote.html">igraph.remote package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.No_of_nodes_for_broadcast">igraph.No_of_nodes_for_broadcast module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-adjacency-module">igraph.adjacency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.automorphisms">igraph.automorphisms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-basic-module">igraph.basic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-bipartite-module">igraph.bipartite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-clustering-module">igraph.clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-community-module">igraph.community module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.configuration">igraph.configuration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-cut-module">igraph.cut module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.datatypes">igraph.datatypes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.formula">igraph.formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.k_dense_network">igraph.k_dense_network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-layout-module">igraph.layout module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-matching-module">igraph.matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.minimum_frequency_bands">igraph.minimum_frequency_bands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-seq-module">igraph.seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-sparse-matrix-module">igraph.sparse_matrix module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.statistics">igraph.statistics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-structural-module">igraph.structural module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.summary">igraph.summary module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.utils">igraph.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.version">igraph.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">igraph</a> &raquo;</li>
+        
+          <li><a href="igraph.html">igraph package</a> &raquo;</li>
+        
+      <li>igraph.io package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/igraph.io.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="igraph-io-package">
+<h1>igraph.io package<a class="headerlink" href="#igraph-io-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-io-adjacency-module">
+<h2>igraph.io.adjacency module<a class="headerlink" href="#igraph-io-adjacency-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.io.bipartite">
+<span id="igraph-io-bipartite-module"></span><h2>igraph.io.bipartite module<a class="headerlink" href="#module-igraph.io.bipartite" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-io-files-module">
+<h2>igraph.io.files module<a class="headerlink" href="#igraph-io-files-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-io-images-module">
+<h2>igraph.io.images module<a class="headerlink" href="#igraph-io-images-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.io.libraries">
+<span id="igraph-io-libraries-module"></span><h2>igraph.io.libraries module<a class="headerlink" href="#module-igraph.io.libraries" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.io.objects">
+<span id="igraph-io-objects-module"></span><h2>igraph.io.objects module<a class="headerlink" href="#module-igraph.io.objects" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.io.random">
+<span id="igraph-io-random-module"></span><h2>igraph.io.random module<a class="headerlink" href="#module-igraph.io.random" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.io.utils">
+<span id="igraph-io-utils-module"></span><h2>igraph.io.utils module<a class="headerlink" href="#module-igraph.io.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.io.utils.safe_locale">
+<span class="sig-prename descclassname"><span class="pre">igraph.io.utils.</span></span><span class="sig-name descname"><span class="pre">safe_locale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/igraph/io/utils.html#safe_locale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.io.utils.safe_locale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that establishes a context that temporarily switches the
+current locale to use decimal dots when printing numbers.</p>
+<p>This can be used to establish an execution context within which it is safe
+to call functions that read or write graphs from/to the disk and ensure that
+they use decimal dots for interoperability with systems that are running
+with another locale.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-igraph.io">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-igraph.io" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="igraph.operators.html" class="btn btn-neutral float-right" title="igraph.operators package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="igraph.drawing.plotly.html" class="btn btn-neutral float-left" title="igraph.drawing.plotly package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

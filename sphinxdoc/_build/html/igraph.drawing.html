@@ -1,0 +1,978 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.drawing package &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="igraph.drawing.cairo package" href="igraph.drawing.cairo.html" />
+    <link rel="prev" title="igraph.app package" href="igraph.app.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">igraph</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="igraph.html">igraph package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="igraph.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="igraph.app.html">igraph.app package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">igraph.drawing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.io.html">igraph.io package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.operators.html">igraph.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.remote.html">igraph.remote package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.No_of_nodes_for_broadcast">igraph.No_of_nodes_for_broadcast module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-adjacency-module">igraph.adjacency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.automorphisms">igraph.automorphisms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-basic-module">igraph.basic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-bipartite-module">igraph.bipartite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-clustering-module">igraph.clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-community-module">igraph.community module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.configuration">igraph.configuration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-cut-module">igraph.cut module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.datatypes">igraph.datatypes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.formula">igraph.formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.k_dense_network">igraph.k_dense_network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-layout-module">igraph.layout module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-matching-module">igraph.matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.minimum_frequency_bands">igraph.minimum_frequency_bands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-seq-module">igraph.seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-sparse-matrix-module">igraph.sparse_matrix module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.statistics">igraph.statistics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-structural-module">igraph.structural module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.summary">igraph.summary module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.utils">igraph.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.version">igraph.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">igraph</a> &raquo;</li>
+        
+          <li><a href="igraph.html">igraph package</a> &raquo;</li>
+        
+      <li>igraph.drawing package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/igraph.drawing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="igraph-drawing-package">
+<h1>igraph.drawing package<a class="headerlink" href="#igraph-drawing-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="igraph.drawing.cairo.html">igraph.drawing.cairo package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-base-module">igraph.drawing.cairo.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-coord-module">igraph.drawing.cairo.coord module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-dendrogram-module">igraph.drawing.cairo.dendrogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-edge-module">igraph.drawing.cairo.edge module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-graph-module">igraph.drawing.cairo.graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-histogram-module">igraph.drawing.cairo.histogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-matrix-module">igraph.drawing.cairo.matrix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-palette-module">igraph.drawing.cairo.palette module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#module-igraph.drawing.cairo.plot">igraph.drawing.cairo.plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-polygon-module">igraph.drawing.cairo.polygon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-text-module">igraph.drawing.cairo.text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#module-igraph.drawing.cairo.utils">igraph.drawing.cairo.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-vertex-module">igraph.drawing.cairo.vertex module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.cairo.html#module-igraph.drawing.cairo">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="igraph.drawing.matplotlib.html">igraph.drawing.matplotlib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-dendrogram-module">igraph.drawing.matplotlib.dendrogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-edge-module">igraph.drawing.matplotlib.edge module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-graph-module">igraph.drawing.matplotlib.graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-histogram-module">igraph.drawing.matplotlib.histogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-matrix-module">igraph.drawing.matplotlib.matrix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-palette-module">igraph.drawing.matplotlib.palette module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#module-igraph.drawing.matplotlib.polygon">igraph.drawing.matplotlib.polygon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#module-igraph.drawing.matplotlib.utils">igraph.drawing.matplotlib.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-vertex-module">igraph.drawing.matplotlib.vertex module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.matplotlib.html#module-igraph.drawing.matplotlib">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="igraph.drawing.plotly.html">igraph.drawing.plotly package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#igraph-drawing-plotly-edge-module">igraph.drawing.plotly.edge module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#igraph-drawing-plotly-graph-module">igraph.drawing.plotly.graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#module-igraph.drawing.plotly.polygon">igraph.drawing.plotly.polygon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#module-igraph.drawing.plotly.utils">igraph.drawing.plotly.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#igraph-drawing-plotly-vertex-module">igraph.drawing.plotly.vertex module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.plotly.html#module-igraph.drawing.plotly">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-baseclasses-module">
+<h2>igraph.drawing.baseclasses module<a class="headerlink" href="#igraph-drawing-baseclasses-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.drawing.colors">
+<span id="igraph-drawing-colors-module"></span><h2>igraph.drawing.colors module<a class="headerlink" href="#module-igraph.drawing.colors" title="Permalink to this headline">¶</a></h2>
+<p>Color handling functions.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.colors.AdvancedGradientPalette">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">AdvancedGradientPalette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#AdvancedGradientPalette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.AdvancedGradientPalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#igraph.drawing.colors.Palette" title="igraph.drawing.colors.Palette"><code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.colors.Palette</span></code></a></p>
+<p>Advanced gradient that consists of more than two base colors.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span> <span class="o">=</span> <span class="n">AdvancedGradientPalette</span><span class="p">([</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">(0.5, 0.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">(0.0, 0.0, 0.75, 1.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.colors.ClusterColoringPalette">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">ClusterColoringPalette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#ClusterColoringPalette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.ClusterColoringPalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#igraph.drawing.colors.PrecalculatedPalette" title="igraph.drawing.colors.PrecalculatedPalette"><code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.colors.PrecalculatedPalette</span></code></a></p>
+<p>A palette suitable for coloring vertices when plotting a clustering.</p>
+<p>This palette tries to make sure that the colors are easily distinguishable.
+This is achieved by using a set of base colors and their lighter and darker
+variants, depending on the number of elements in the palette.</p>
+<p>When the desired size of the palette is less than or equal to the number of
+base colors (denoted by M{n}), only the bsae colors will be used. When the
+size of the palette is larger than M{n} but less than M{2*n}, the base colors
+and their lighter variants will be used. Between M{2*n} and M{3*n}, the
+base colors and their lighter and darker variants will be used. Above M{3*n},
+more darker and lighter variants will be generated, but this makes the individual
+colors less and less distinguishable.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.colors.GradientPalette">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">GradientPalette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#GradientPalette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.GradientPalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#igraph.drawing.colors.Palette" title="igraph.drawing.colors.Palette"><code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.colors.Palette</span></code></a></p>
+<p>Base class for gradient palettes</p>
+<p>Gradient palettes contain a gradient between two given colors.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span> <span class="o">=</span> <span class="n">GradientPalette</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">(1.0, 0.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">(0.5, 0.0, 0.5, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">(0.0, 0.0, 1.0, 1.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.colors.Palette">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">Palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#Palette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.Palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class of color palettes.</p>
+<p>Color palettes are mappings that assign integers from the range
+0..M{n-1} to colors (4-tuples). M{n} is called the size or length
+of the palette. C{igraph} comes with a number of predefined palettes,
+so this class is useful for you only if you want to define your
+own palette. This can be done by subclassing this class and implementing
+the L{Palette._get} method as necessary.</p>
+<p>Palettes can also be used as lists or dicts, for the C{__getitem__}
+method is overridden properly to call L{Palette.get}.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.colors.Palette.clear_cache">
+<span class="sig-name descname"><span class="pre">clear_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#Palette.clear_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.Palette.clear_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the result cache.</p>
+<p>The return values of L{Palette.get} are cached. Use this method
+to clear the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.colors.Palette.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#Palette.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.Palette.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the given color from the palette.</p>
+<p>Values are cached: if the specific value given has already been
+looked up, its value will be returned from the cache instead of
+calculating it again. Use L{Palette.clear_cache} to clear the cache
+if necessary.</p>
+<dl class="simple">
+<dt>&#64;note: you shouldn’t override this method in subclasses, override</dt><dd><p>L{_get} instead. If you override this method, lookups in the
+L{known_colors} dict won’t work, so you won’t be able to refer to
+colors by names or RGBA quadruplets, only by integer indices. The
+caching functionality will disappear as well. However,
+feel free to override this method if this is exactly the behaviour
+you want.</p>
+</dd>
+<dt>&#64;param v: the color to be retrieved. If it is an integer, it is</dt><dd><p>passed to L{Palette._get} to be translated to an RGBA quadruplet.
+Otherwise it is passed to L{color_name_to_rgb()} to determine the
+RGBA values.</p>
+</dd>
+</dl>
+<p>&#64;return: the color as an RGBA quadruplet</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.colors.Palette.get_many">
+<span class="sig-name descname"><span class="pre">get_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#Palette.get_many"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.Palette.get_many" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns multiple colors from the palette.</p>
+<p>Values are cached: if the specific value given has already been
+looked upon, its value will be returned from the cache instead of
+calculating it again. Use L{Palette.clear_cache} to clear the cache
+if necessary.</p>
+<dl class="simple">
+<dt>&#64;param colors: the list of colors to be retrieved. The palette class</dt><dd><p>tries to make an educated guess here: if it is not possible to
+interpret the value you passed here as a list of colors, the
+class will simply try to interpret it as a single color by
+forwarding the value to L{Palette.get}.</p>
+</dd>
+<dt>&#64;return: the colors as a list of RGBA quadruplets. The result will</dt><dd><p>be a list even if you passed a single color index or color name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.colors.Palette.length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#igraph.drawing.colors.Palette.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of colors in this palette</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.colors.PrecalculatedPalette">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">PrecalculatedPalette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#PrecalculatedPalette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.PrecalculatedPalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#igraph.drawing.colors.Palette" title="igraph.drawing.colors.Palette"><code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.colors.Palette</span></code></a></p>
+<p>A palette that returns colors from a pre-calculated list of colors</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.colors.RainbowPalette">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">RainbowPalette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#RainbowPalette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.RainbowPalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#igraph.drawing.colors.Palette" title="igraph.drawing.colors.Palette"><code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.colors.Palette</span></code></a></p>
+<p>A palette that varies the hue of the colors along a scale.</p>
+<p>Colors in a rainbow palette all have the same saturation, value and
+alpha components, while the hue is varied between two given extremes
+linearly. This palette has the advantage that it wraps around nicely
+if the hue is varied between zero and one (which is the default).</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span> <span class="o">=</span> <span class="n">RainbowPalette</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">(1.0, 0.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="go">(1.0, 1.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+<span class="go">(0.0, 1.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span> <span class="o">=</span> <span class="n">RainbowPalette</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+<span class="go">(0.0, 0.5, 0.5, 0.75)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+<span class="go">(0.0, 0.0, 0.5, 0.75)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">(0.5, 0.0, 0.5, 0.75)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span> <span class="o">=</span> <span class="n">RainbowPalette</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal2</span> <span class="o">=</span> <span class="n">RainbowPalette</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="o">==</span> <span class="n">pal2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span> <span class="o">==</span> <span class="n">pal2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>This palette was modeled after the C{rainbow} command of R.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.color_name_to_rgb">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">color_name_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#color_name_to_rgb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.color_name_to_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given in one of the supported color formats to
+R-G-B values.</p>
+<p>This is done by calling L{color_name_to_rgba} and then throwing away
+the alpha value.</p>
+<dl class="simple">
+<dt>&#64;see: color_name_to_rgba for more details about what formats are</dt><dd><p>understood by this function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.color_name_to_rgba">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">color_name_to_rgba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#color_name_to_rgba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.color_name_to_rgba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given in one of the supported color formats to
+R-G-B-A values.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="go">(1.0, 0.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;#ff8000&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">128</span><span class="o">/</span><span class="mf">255.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;#ff800080&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">128</span><span class="o">/</span><span class="mf">255.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">128</span><span class="o">/</span><span class="mf">255.0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;#08f&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">136</span><span class="o">/</span><span class="mf">255.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;rgb(100%, 50%, 0%)&quot;</span><span class="p">)</span>
+<span class="go">(1.0, 0.5, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;rgba(100%, 50%, 0%, 25%)&quot;</span><span class="p">)</span>
+<span class="go">(1.0, 0.5, 0.0, 0.25)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;hsla(120, 100%, 50%, 0.5)&quot;</span><span class="p">)</span>
+<span class="go">(0.0, 1.0, 0.0, 0.5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;hsl(60, 100%, 50%)&quot;</span><span class="p">)</span>
+<span class="go">(1.0, 1.0, 0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_name_to_rgba</span><span class="p">(</span><span class="s2">&quot;hsv(60, 100%, 100%)&quot;</span><span class="p">)</span>
+<span class="go">(1.0, 1.0, 0.0, 1.0)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>&#64;param color: the color to be converted in one of the following formats:</dt><dd><ul class="simple">
+<li><p>B{CSS3 color specification}: C{#rrggbb}, C{#rgb}, C{#rrggbbaa}, C{#rgba},
+C{rgb(red, green, blue)}, C{rgba(red, green, blue, alpha)},
+C{hsl(hue, saturation, lightness)}, C{hsla(hue, saturation, lightness, alpha)},
+C{hsv(hue, saturation, value)} and C{hsva(hue, saturation, value, alpha)}
+where the components are given as hexadecimal numbers in the first four
+cases and as decimals or percentages (0%-100%) in the remaining cases.
+Red, green and blue components are between 0 and 255; hue is between 0
+and 360; saturation, lightness and value is between 0 and 100; alpha is
+between 0 and 1.</p></li>
+<li><p>B{Valid HTML color names}, i.e. those that are present in the HTML 4.0
+specification</p></li>
+<li><p>B{Valid X11 color names}, see U{<a class="reference external" href="http://en.wikipedia.org/wiki/X11_color_names">http://en.wikipedia.org/wiki/X11_color_names</a>}</p></li>
+<li><p>B{Red-green-blue components} given separately in either a comma-, slash- or
+whitespace-separated string or a list or a tuple, in the range of 0-255.
+An alpha value of 255 (maximal opacity) will be assumed.</p></li>
+<li><p>B{Red-green-blue-alpha components} given separately in either a comma-, slash-
+or whitespace-separated string or a list or a tuple, in the range of 0-255</p></li>
+<li><p>B{A single palette index} given either as a string or a number. Uses
+the palette given in the C{palette} parameter of the method call.</p></li>
+</ul>
+</dd>
+<dt>&#64;param palette: the palette to be used if a single number is passed to</dt><dd><p>the method. Must be an instance of L{colors.Palette}.</p>
+</dd>
+<dt>&#64;return: the RGBA values corresponding to the given color in a 4-tuple.</dt><dd><p>Since these colors are primarily used by Cairo routines, the tuples
+contain floats in the range 0.0-1.0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.hsl_to_rgb">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">hsl_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#hsl_to_rgb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.hsl_to_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its HSL coordinates (hue, saturation,
+lightness) to RGB coordinates.</p>
+<p>Each of the HSL coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.hsla_to_rgba">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">hsla_to_rgba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#hsla_to_rgba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.hsla_to_rgba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its HSLA coordinates (hue, saturation,
+lightness, alpha) to RGBA coordinates.</p>
+<p>Each of the HSLA coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.hsv_to_rgb">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">hsv_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#hsv_to_rgb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.hsv_to_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its HSV coordinates (hue, saturation,
+value) to RGB coordinates.</p>
+<p>Each of the HSV coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.hsva_to_rgba">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">hsva_to_rgba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#hsva_to_rgba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.hsva_to_rgba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its HSVA coordinates (hue, saturation,
+value, alpha) to RGB coordinates.</p>
+<p>Each of the HSVA coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.rgb_to_hsl">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">rgb_to_hsl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#rgb_to_hsl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.rgb_to_hsl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its RGB coordinates to HSL coordinates
+(hue, saturation, lightness).</p>
+<p>Each of the RGB coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.rgb_to_hsv">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">rgb_to_hsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#rgb_to_hsv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.rgb_to_hsv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its RGB coordinates to HSV coordinates
+(hue, saturation, value).</p>
+<p>Each of the RGB coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.rgba_to_hsla">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">rgba_to_hsla</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#rgba_to_hsla"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.rgba_to_hsla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its RGBA coordinates to HSLA coordinates
+(hue, saturation, lightness, alpha).</p>
+<p>Each of the RGBA coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.colors.rgba_to_hsva">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.colors.</span></span><span class="sig-name descname"><span class="pre">rgba_to_hsva</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/colors.html#rgba_to_hsva"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.colors.rgba_to_hsva" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a color given by its RGBA coordinates to HSVA coordinates
+(hue, saturation, value, alpha).</p>
+<p>Each of the RGBA coordinates must be in the range [0, 1].</p>
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-drawing-graph-module">
+<h2>igraph.drawing.graph module<a class="headerlink" href="#igraph-drawing-graph-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-metamagic-module">
+<h2>igraph.drawing.metamagic module<a class="headerlink" href="#igraph-drawing-metamagic-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-shapes-module">
+<h2>igraph.drawing.shapes module<a class="headerlink" href="#igraph-drawing-shapes-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-text-module">
+<h2>igraph.drawing.text module<a class="headerlink" href="#igraph-drawing-text-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.drawing.utils">
+<span id="igraph-drawing-utils-module"></span><h2>igraph.drawing.utils module<a class="headerlink" href="#module-igraph.drawing.utils" title="Permalink to this headline">¶</a></h2>
+<p>Utility classes for drawing routines.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.utils.BoundingBox">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">BoundingBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#BoundingBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.BoundingBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#igraph.drawing.utils.Rectangle" title="igraph.drawing.utils.Rectangle"><code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.utils.Rectangle</span></code></a></p>
+<p>Class representing a bounding box (a rectangular area) that
+encloses some objects.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">Point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">igraph.drawing.utils._Point</span></code></p>
+<p>Class representing a point on the 2D plane.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.FromPolar">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FromPolar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.FromPolar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.FromPolar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a point from polar coordinates.</p>
+<p>C{radius} is the distance of the point from the origin; C{angle} is the
+angle between the X axis and the vector pointing to the point from
+the origin.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.as_polar">
+<span class="sig-name descname"><span class="pre">as_polar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.as_polar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.as_polar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the polar coordinate representation of the point.</p>
+<p>&#64;return: the radius and the angle in a tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the distance of the point from another one.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="go">5.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.interpolate">
+<span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linearly interpolates between the coordinates of this point and
+another one.</p>
+<p>&#64;param  other:  the other point
+&#64;param  ratio:  the interpolation ratio between 0 and 1. Zero will</p>
+<blockquote>
+<div><p>return this point, 1 will return the other point.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.length">
+<span class="sig-name descname"><span class="pre">length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of the vector pointing from the origin to this
+point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.normalized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes the coordinates of the point s.t. its length will be 1
+after normalization. Returns the normalized point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.sq_length">
+<span class="sig-name descname"><span class="pre">sq_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.sq_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.sq_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the squared length of the vector pointing from the origin
+to this point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Point.towards">
+<span class="sig-name descname"><span class="pre">towards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Point.towards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Point.towards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the point that is at a given distance from this point
+towards another one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">Rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing a rectangle.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.bottom">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bottom</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.bottom" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Y coordinate of the bottom edge of the box</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.contract">
+<span class="sig-name descname"><span class="pre">contract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">margins</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.contract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.contract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contracts the rectangle by the given margins.</p>
+<p>&#64;return: a new L{Rectangle} object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.coords">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coords</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>The coordinates of the corners.</p>
+<p>The coordinates are returned as a 4-tuple in the following order:
+left edge, top edge, right edge, bottom edge.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">margins</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.expand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the rectangle by the given margins.</p>
+<p>&#64;return: a new L{Rectangle} object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of the rectangle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.intersection">
+<span class="sig-name descname"><span class="pre">intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.intersection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the intersection of this rectangle with another.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r3</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+<span class="go">Rectangle(20.0, 20.0, 30.0, 30.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">&amp;</span> <span class="n">r1</span>
+<span class="go">Rectangle(20.0, 20.0, 30.0, 30.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span> <span class="o">==</span> <span class="n">r1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">r3</span><span class="p">)</span>
+<span class="go">Rectangle(0.0, 0.0, 0.0, 0.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.isdisjoint">
+<span class="sig-name descname"><span class="pre">isdisjoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.isdisjoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.isdisjoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns C{True} if the two rectangles have no intersection.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r3</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">r3</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r3</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.isempty">
+<span class="sig-name descname"><span class="pre">isempty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.isempty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.isempty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns C{True} if the rectangle is empty (i.e. it has zero
+width and height).</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">isempty</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span><span class="o">.</span><span class="n">isempty</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span><span class="o">.</span><span class="n">isempty</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.left">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.left" title="Permalink to this definition">¶</a></dt>
+<dd><p>The X coordinate of the left side of the box</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.midx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">midx</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.midx" title="Permalink to this definition">¶</a></dt>
+<dd><p>The X coordinate of the center of the box</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.midy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">midy</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.midy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Y coordinate of the center of the box</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.right">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.right" title="Permalink to this definition">¶</a></dt>
+<dd><p>The X coordinate of the right side of the box</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shape of the rectangle (width, height)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.top">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.top" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Y coordinate of the top edge of the box</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates the rectangle in-place.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span>
+<span class="go">Rectangle(40.0, 10.0, 80.0, 60.0)</span>
+</pre></div>
+</div>
+<p>&#64;param dx: the X coordinate of the translation vector
+&#64;param dy: the Y coordinate of the translation vector</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.union">
+<span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#Rectangle.union"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.Rectangle.union" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the union of this rectangle with another.</p>
+<p>The resulting rectangle is the smallest rectangle that contains both
+rectangles.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r3</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+<span class="go">Rectangle(10.0, 10.0, 50.0, 50.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">|</span> <span class="n">r1</span>
+<span class="go">Rectangle(10.0, 10.0, 50.0, 50.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span> <span class="o">==</span> <span class="n">r1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">r3</span><span class="p">)</span>
+<span class="go">Rectangle(10.0, 10.0, 90.0, 90.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.utils.Rectangle.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#igraph.drawing.utils.Rectangle.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of the rectangle</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.autocurve">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">autocurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'curved'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#autocurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.autocurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates curvature values for each of the edges in the graph to make
+sure that multiple edges are shown properly on a graph plot.</p>
+<p>This function checks the multiplicity of each edge in the graph and
+assigns curvature values (numbers between -1 and 1, corresponding to
+CCW (-1), straight (0) and CW (1) curved edges) to them. The assigned
+values are either stored in an edge attribute or returned as a list,
+depending on the value of the I{attribute} argument.</p>
+<p>&#64;param graph: the graph on which the calculation will be run
+&#64;param attribute: the name of the edge attribute to save the curvature</p>
+<blockquote>
+<div><p>values to. The default value is C{curved}, which is the name of the
+edge attribute the default graph plotter checks to decide whether an
+edge should be curved on the plot or not. If I{attribute} is C{None},
+the result will not be stored.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param default: the default curvature for single edges. Zero means that</dt><dd><p>single edges will be straight. If you want single edges to be curved
+as well, try passing 0.5 or -0.5 here.</p>
+</dd>
+<dt>&#64;return: the list of curvature values if I{attribute} is C{None},</dt><dd><p>otherwise C{None}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.calculate_corner_radii">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_corner_radii</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corner_radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#calculate_corner_radii"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.calculate_corner_radii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of points and a desired corner radius, returns a list
+containing proposed corner radii for each of the points such that it is
+ensured that the corner radius at a point is never larger than half of
+the minimum distance between the point and its neighbors.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.euclidean_distance">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">euclidean_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#euclidean_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.euclidean_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Euclidean distance between points (x1,y1) and (x2,y2).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.evaluate_cubic_bezier">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">evaluate_cubic_bezier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#evaluate_cubic_bezier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.evaluate_cubic_bezier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the Bezier curve from point (x0,y0) to (x3,y3)
+via control points (x1,y1) and (x2,y2) at t. t is typically in the range
+[0; 1] such that 0 returns (x0, y0) and 1 returns (x3, y3).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.get_bezier_control_points_for_curved_edge">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">get_bezier_control_points_for_curved_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curvature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#get_bezier_control_points_for_curved_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.get_bezier_control_points_for_curved_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that calculates the Bezier control points for a
+curved edge that goes from (x1, y1) to (x2, y2).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.intersect_bezier_curve_and_circle">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">intersect_bezier_curve_and_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#intersect_bezier_curve_and_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.intersect_bezier_curve_and_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary search solver for finding the intersection of a Bezier curve
+and a circle centered at the curve’s end point.</p>
+<p>Returns the x, y coordinates of the intersection point.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.utils.str_to_orientation">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.utils.</span></span><span class="sig-name descname"><span class="pre">str_to_orientation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversed_horizontal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversed_vertical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/utils.html#str_to_orientation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.utils.str_to_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to interpret a string as an orientation value.</p>
+<p>The following basic values are understood: <code class="docutils literal notranslate"><span class="pre">left-right</span></code>, <code class="docutils literal notranslate"><span class="pre">bottom-top</span></code>,
+<code class="docutils literal notranslate"><span class="pre">right-left</span></code>, <code class="docutils literal notranslate"><span class="pre">top-bottom</span></code>. Possible aliases are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">horizontal</span></code>, <code class="docutils literal notranslate"><span class="pre">horiz</span></code>, <code class="docutils literal notranslate"><span class="pre">h</span></code> and <code class="docutils literal notranslate"><span class="pre">lr</span></code> for <code class="docutils literal notranslate"><span class="pre">left-right</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vertical</span></code>, <code class="docutils literal notranslate"><span class="pre">vert</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code> and <code class="docutils literal notranslate"><span class="pre">tb</span></code> for top-bottom.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lr</span></code> for <code class="docutils literal notranslate"><span class="pre">left-right</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rl</span></code> for <code class="docutils literal notranslate"><span class="pre">right-left</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">reversed_horizontal</span></code> reverses the meaning of <code class="docutils literal notranslate"><span class="pre">horizontal</span></code>, <code class="docutils literal notranslate"><span class="pre">horiz</span></code>
+and <code class="docutils literal notranslate"><span class="pre">h</span></code> to <code class="docutils literal notranslate"><span class="pre">rl</span></code> (instead of <code class="docutils literal notranslate"><span class="pre">lr</span></code>); similarly, <code class="docutils literal notranslate"><span class="pre">reversed_vertical</span></code>
+reverses the meaning of <code class="docutils literal notranslate"><span class="pre">vertical</span></code>, <code class="docutils literal notranslate"><span class="pre">vert</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code> to <code class="docutils literal notranslate"><span class="pre">bt</span></code>
+(instead of <code class="docutils literal notranslate"><span class="pre">tb</span></code>).</p>
+<p>Returns one of <code class="docutils literal notranslate"><span class="pre">lr</span></code>, <code class="docutils literal notranslate"><span class="pre">rl</span></code>, <code class="docutils literal notranslate"><span class="pre">tb</span></code> or <code class="docutils literal notranslate"><span class="pre">bt</span></code>, or throws <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
+if the string cannot be interpreted as an orientation.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="igraph.drawing.cairo.html" class="btn btn-neutral float-right" title="igraph.drawing.cairo package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="igraph.app.html" class="btn btn-neutral float-left" title="igraph.app package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
