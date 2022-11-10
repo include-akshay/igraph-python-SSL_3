@@ -160,8 +160,11 @@ class CairoPlot:
             self._filename = target
             _, ext = os.path.splitext(target)
             ext = ext.lower()
-            if ext == ".pdf":
-                target=target.replace(".pdf",".svg")
+            if ext == ".pdf" or ext== "":
+                if ext==".pdf":
+                    target=target.replace(".pdf",".svg")
+                else:
+                    target=target+".svg"
                 self._surface = cairo.SVGSurface(
                     target, self.bbox.width, self.bbox.height)
                 #cairo.PDFSurface(
