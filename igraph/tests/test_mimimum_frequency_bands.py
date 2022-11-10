@@ -1,7 +1,14 @@
 import unittest
 import sys
+import os
 from collections import defaultdict
+<<<<<<< HEAD
+sys.path.append(os.path.abspath(os.path.join('..')))
+
+
+=======
 sys.path.append('/home/anurag/work/IITD/COP701/igraph-python-SSL_3/igraph')
+>>>>>>> e90d2d9ebe3cc828fdef4f1a51ba363b25e3a0c6
 import minimum_frequency_bands
 graph = minimum_frequency_bands.minimum_frequency_bands(5)
 graph.addEdge(0, 1)

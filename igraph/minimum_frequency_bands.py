@@ -1,10 +1,11 @@
 # algorithm for graph coloring
 from collections import defaultdict
+import igraph as ig 
+import datetime
 
 __all__ =(
 "addEdge",
-"frequency_band"
-,
+"frequency_band",
 )
 class minimum_frequency_bands:
    
@@ -17,6 +18,9 @@ class minimum_frequency_bands:
         a object of the class. """
         self.V= vertices 
         self.adj = defaultdict(list)
+        self.graph_to_plot=ig.Graph()
+        for i in range(0, self.V):
+            self.graph_to_plot.add_vertex(chr(ord('a')+i))
 
     def addEdge(self, v, w):
          """to add the edges provided by the user in the adjacency list.
@@ -27,6 +31,7 @@ class minimum_frequency_bands:
          """
          self.adj[v].append(w)
          self.adj[w].append(v)
+         self.graph_to_plot.add_edge(chr(ord('a')+v),chr(ord('a')+w))
             
 
 # Assigns colors (starting from 0) to all
@@ -44,6 +49,8 @@ class minimum_frequency_bands:
                             color cr is assigned to one of its adjacent vertices.
                             initially initialize with False.
         
+        @return : It returns the number of bands required, a graph object which will help in saving the file.
+                  and finally a list which tells the color of the node.
         """
         
         result = [-1] * self.V
@@ -75,6 +82,18 @@ class minimum_frequency_bands:
                 if (result[i] != -1):
                     available[result[i]] = False
 
-        return(len(set(result)), result)
+        layout = self.graph_to_plot.layout_kamada_kawai()
+        color_dict={0: "blue",1:"red",2:"green",3:"yellow", 4:"white", 5:"balck" }  
+        
+        yes_or_no=input("Do you want to save the graph as well :: (y/n)")
+        if yes_or_no == 'y' or yes_or_no=='Y':
+            name_of_svg=str(datetime.datetime.now())
+            name_of_svg=name_of_svg.replace(" ", "")
+            name_of_svg=name_of_svg.replace("-", "")
+            name_of_svg=name_of_svg.replace(".", "")
+            name_of_svg=name_of_svg.replace(":", "")
+            
 
+            self.graph_to_plot.write_svg(f"file{name_of_svg}.svg", layout=layout, colors =[color_dict[i] for i in result])
 
+        return(len(set(result)), result, self.graph_to_plot)

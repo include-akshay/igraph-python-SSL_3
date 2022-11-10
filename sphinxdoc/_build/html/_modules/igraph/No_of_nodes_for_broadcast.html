@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.No_of_nodes_for_broadcast &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">igraph</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>igraph.No_of_nodes_for_broadcast</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for igraph.No_of_nodes_for_broadcast</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="n">__all__</span> <span class="o">=</span><span class="p">(</span><span class="s2">&quot;Number_of_sources&quot;</span><span class="p">,</span>
+<span class="s2">&quot;addEdge&quot;</span><span class="p">,</span>
+<span class="s2">&quot;explore&quot;</span><span class="p">,</span>
+<span class="s2">&quot;reverse_graph&quot;</span><span class="p">,</span>
+<span class="s2">&quot;SCC_helper&quot;</span><span class="p">,</span>
+<span class="s2">&quot;nodes_for_broadcasting&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<div class="viewcode-block" id="Number_of_sources"><a class="viewcode-back" href="../../igraph.html#igraph.No_of_nodes_for_broadcast.Number_of_sources">[docs]</a><span class="k">class</span> <span class="nc">Number_of_sources</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;It finds the names of the nodes,the network admin should send a message </span>
+<span class="sd">    in order to get it broadcasted to all the nodes/users/systems in the provided </span>
+<span class="sd">    network.</span>
+<span class="sd">    This is to help a network admin by getting his/her work get minimized by providing</span>
+<span class="sd">    them the least number of node names to send a message&quot;&quot;&quot;</span>
+  
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vertices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;to iniialize the class object with the number of vertices asked by </span>
+<span class="sd">        the user and also create an adjacency list.</span>
+<span class="sd">        @param vertices : It is the number of vertices in the graph that </span>
+<span class="sd">        is to be analysed and it is supposed to be provided by the user when creating</span>
+<span class="sd">        a object of the class. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="o">=</span> <span class="n">vertices</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        
+    
+<div class="viewcode-block" id="Number_of_sources.addEdge"><a class="viewcode-back" href="../../igraph.html#igraph.No_of_nodes_for_broadcast.Number_of_sources.addEdge">[docs]</a>    <span class="k">def</span> <span class="nf">addEdge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;to add edges provided by the user in the adjacancy list.</span>
+<span class="sd">        @param u : The souce node.</span>
+<span class="sd">        </span>
+<span class="sd">        @param v : The destination node.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Number_of_sources.explore"><a class="viewcode-back" href="../../igraph.html#igraph.No_of_nodes_for_broadcast.Number_of_sources.explore">[docs]</a>    <span class="k">def</span> <span class="nf">explore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">visited</span><span class="p">,</span> <span class="n">stack</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;this is inorder to perform DFS on the given graph and push the nodes </span>
+<span class="sd">        in the stack according to their post order numbering.</span>
+<span class="sd">        And which will be used later on to convert the provided graph with it&#39;s </span>
+<span class="sd">        reverse graph.</span>
+<span class="sd">        @param v: the node whose expolration is supposed to be done</span>
+
+<span class="sd">        @param visited : the array to keep check if a certain has been visited already</span>
+<span class="sd">                in order to avoid into getting infinite loops</span>
+
+<span class="sd">        @ param stack : a stack for us to keep track of the nodes according to their</span>
+<span class="sd">                post numbers&quot;&quot;&quot;</span>
+        <span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">explore</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="n">stack</span><span class="p">)</span>
+
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+
+    
+<div class="viewcode-block" id="Number_of_sources.reverse_graph"><a class="viewcode-back" href="../../igraph.html#igraph.No_of_nodes_for_broadcast.Number_of_sources.reverse_graph">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is method which is used to reverse graph G=(V, E) to G=(V&#39;,E&#39;). </span>
+<span class="sd">        Such that for every edge (u,v) in E, there will exist an edge(v,u) in </span>
+<span class="sd">        E&#39; in G&#39;.</span>
+<span class="sd">        This way we can have reverse graph which will be used later on to decide the </span>
+<span class="sd">        requirements of the class</span>
+<span class="sd">        @param : self, it is the object that called this function</span>
+<span class="sd">        @return : reversed Graph G&#39; &quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Number_of_sources</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span>
+ 
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">addEdge</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span></div>
+
+    
+<div class="viewcode-block" id="Number_of_sources.SCC_helper"><a class="viewcode-back" href="../../igraph.html#igraph.No_of_nodes_for_broadcast.Number_of_sources.SCC_helper">[docs]</a>    <span class="k">def</span> <span class="nf">SCC_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">visited</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This method tells the main function which are the Strongly connected components</span>
+<span class="sd">        So that it can get hand on the nodes to which the admin should send the msg inorder</span>
+<span class="sd">        to get it broadcasted</span>
+<span class="sd">        </span>
+<span class="sd">        @param v : node through which we will do the exploration on the reversed graph</span>
+<span class="sd">        </span>
+<span class="sd">        @param visited :the array to keep check if a certain has been visited already</span>
+<span class="sd">                         in order to avoid into getting infinite loops.</span>
+<span class="sd">        </span>
+<span class="sd">        @return : A list which contains all the nodes of a specific Strongly Connected </span>
+<span class="sd">                  component.&quot;&quot;&quot;</span>
+        <span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">=</span> <span class="kc">True</span>
+        <span class="n">main_list</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+                <span class="nb">list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SCC_helper</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">visited</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="n">main_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="n">main_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">main_list</span></div>
+
+    
+<div class="viewcode-block" id="Number_of_sources.nodes_for_broadcasting"><a class="viewcode-back" href="../../igraph.html#igraph.No_of_nodes_for_broadcast.Number_of_sources.nodes_for_broadcasting">[docs]</a>    <span class="k">def</span> <span class="nf">nodes_for_broadcasting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is the main method which would be called by the user in order to get </span>
+<span class="sd">        results for the query : How many nodes should the network admin send a message </span>
+<span class="sd">        in order to get it broadcasted to all the nodes/users/systems in the provided </span>
+<span class="sd">        network.</span>
+<span class="sd">        </span>
+<span class="sd">        @returns : the names of the nodes to whom the network admin should send</span>
+<span class="sd">        the message inorder to get the message broadcasted&quot;&quot;&quot;</span>
+         
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">visited</span> <span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="p">):</span>
+            <span class="k">if</span> <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">explore</span><span class="p">(</span> <span class="n">i</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="n">stack</span> <span class="p">)</span>
+        
+        <span class="n">gr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse_graph</span><span class="p">()</span>
+
+        <span class="n">visited</span> <span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span>
+        <span class="n">leader</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">):</span>
+            <span class="n">leader</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+           
+            <span class="n">i</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="c1">#print(i)</span>
+            <span class="k">if</span> <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+                <span class="nb">list</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">SCC_helper</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">visited</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="n">leader</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="nb">hash</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">leader</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">leader</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">leader</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">leader</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">==</span><span class="n">leader</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+                            <span class="nb">hash</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="n">no_incoming_edge</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">hash</span><span class="p">)):</span>
+            <span class="k">if</span><span class="p">(</span><span class="nb">hash</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+                <span class="n">no_incoming_edge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">leader</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  
+
+        <span class="n">no_incoming_edge</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">no_incoming_edge</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">no_incoming_edge</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

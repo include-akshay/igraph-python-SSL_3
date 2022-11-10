@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.summary &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">igraph</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>igraph.summary</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for igraph.summary</h1><div class="highlight"><pre>
+<span></span><span class="c1"># vim:ts=4:sw=4:sts=4:et</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Summary representation of a graph.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">igraph.statistics</span> <span class="kn">import</span> <span class="n">median</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+<span class="kn">from</span> <span class="nn">texttable</span> <span class="kn">import</span> <span class="n">Texttable</span>
+<span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">TextWrapper</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;GraphSummary&quot;</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FakeWrapper</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Object whose interface is compatible with C{textwrap.TextWrapper}</span>
+<span class="sd">    but does no wrapping.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_wrapper_for_width</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a text wrapper that wraps text for the given width.</span>
+
+<span class="sd">    @param width: the maximal width of each line that the text wrapper</span>
+<span class="sd">      produces. C{None} means that no wrapping will be performed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FakeWrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TextWrapper</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GraphSummary"><a class="viewcode-back" href="../../igraph.html#igraph.summary.GraphSummary">[docs]</a><span class="k">class</span> <span class="nc">GraphSummary</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Summary representation of a graph.</span>
+
+<span class="sd">    The summary representation includes a header line and the list of</span>
+<span class="sd">    edges. The header line consists of C{IGRAPH}, followed by a</span>
+<span class="sd">    four-character long code, the number of vertices, the number of</span>
+<span class="sd">    edges, two dashes (C{--}) and the name of the graph (i.e.</span>
+<span class="sd">    the contents of the C{name} attribute, if any). For instance,</span>
+<span class="sd">    a header line may look like this::</span>
+
+<span class="sd">        IGRAPH U--- 4 5 --</span>
+
+<span class="sd">    The four-character code describes some basic properties of the</span>
+<span class="sd">    graph. The first character is C{U} if the graph is undirected,</span>
+<span class="sd">    C{D} if it is directed. The second letter is C{N} if the graph</span>
+<span class="sd">    has a vertex attribute called C{name}, or a dash otherwise. The</span>
+<span class="sd">    third letter is C{W} if the graph is weighted (i.e. it has an</span>
+<span class="sd">    edge attribute called C{weight}), or a dash otherwise. The</span>
+<span class="sd">    fourth letter is C{B} if the graph has a vertex attribute called</span>
+<span class="sd">    C{type}; this is usually used for bipartite graphs.</span>
+
+<span class="sd">    Edges may be presented as an ordinary edge list or an adjacency</span>
+<span class="sd">    list. By default, this depends on the number of edges; however,</span>
+<span class="sd">    you can control it with the appropriate constructor arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">,</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">78</span><span class="p">,</span>
+        <span class="n">edge_list_format</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">max_rows</span><span class="o">=</span><span class="mi">99999</span><span class="p">,</span>
+        <span class="n">print_graph_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">print_vertex_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">print_edge_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a summary representation of a graph.</span>
+
+<span class="sd">        @param verbosity: the verbosity of the summary. If zero, only</span>
+<span class="sd">          the header line will be returned. If one, the header line</span>
+<span class="sd">          and the list of edges will both be returned.</span>
+<span class="sd">        @param width: the maximal width of each line in the summary.</span>
+<span class="sd">          C{None} means that no limit will be enforced.</span>
+<span class="sd">        @param max_rows: the maximal number of rows to print in a single</span>
+<span class="sd">          table (e.g., vertex attribute table or edge attribute table)</span>
+<span class="sd">        @param edge_list_format: format of the edge list in the summary.</span>
+<span class="sd">          Supported formats are: C{compressed}, C{adjlist}, C{edgelist},</span>
+<span class="sd">          C{auto}, which selects automatically from the other three based</span>
+<span class="sd">          on some simple criteria.</span>
+<span class="sd">        @param print_graph_attributes: whether to print graph attributes</span>
+<span class="sd">          if there are any.</span>
+<span class="sd">        @param print_vertex_attributes: whether to print vertex attributes</span>
+<span class="sd">          if there are any.</span>
+<span class="sd">        @param print_edge_attributes: whether to print edge attributes</span>
+<span class="sd">          if there are any.</span>
+<span class="sd">        @param full: False has no effect; True turns on the attribute</span>
+<span class="sd">          printing for graph, vertex and edge attributes with verbosity 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
+            <span class="n">print_graph_attributes</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">print_vertex_attributes</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">print_edge_attributes</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">verbosity</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span> <span class="o">=</span> <span class="n">graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge_list_format</span> <span class="o">=</span> <span class="n">edge_list_format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_graph_attributes</span> <span class="o">=</span> <span class="n">print_graph_attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_vertex_attributes</span> <span class="o">=</span> <span class="n">print_vertex_attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_edge_attributes</span> <span class="o">=</span> <span class="n">print_edge_attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">_get_wrapper_for_width</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">break_on_hyphens</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">is_named</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edges_header</span> <span class="o">=</span> <span class="s2">&quot;+ edges (vertex names):&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edges_header</span> <span class="o">=</span> <span class="s2">&quot;+ edges:&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arrow</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">is_directed</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%%</span><span class="s2">s</span><span class="si">%s%%</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow</span>
+
+    <span class="k">def</span> <span class="nf">_construct_edgelist_adjlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs the part in the summary that prints the edge list in an</span>
+<span class="sd">        adjacency list format.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_edges_header</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vcount</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">is_named</span><span class="p">():</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span>
+            <span class="n">format_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%%%d</span><span class="s2">s </span><span class="si">%s</span><span class="s2"> </span><span class="si">%%</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">maxlen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">v1</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+                <span class="n">neis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+                <span class="n">neis</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">v2</span><span class="p">])</span> <span class="k">for</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">neis</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_str</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">neis</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vcount</span><span class="p">()))</span>
+            <span class="n">num_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%%%d</span><span class="s2">d&quot;</span> <span class="o">%</span> <span class="n">maxlen</span>
+            <span class="n">format_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%%</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_format</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">v1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vcount</span><span class="p">()):</span>
+                <span class="n">neis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+                <span class="n">neis</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">num_format</span> <span class="o">%</span> <span class="n">v2</span> <span class="k">for</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">neis</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_str</span> <span class="o">%</span> <span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">neis</span><span class="p">))</span>
+
+        <span class="c1"># Try to wrap into multiple columns if that works with the given width</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="n">colcount</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxlen</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">colcount</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># Rewrap to multiple columns</span>
+                <span class="n">nrows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">colheight</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">nrows</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">colcount</span><span class="p">)))</span>
+                <span class="n">newrows</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">colheight</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                    <span class="n">newrows</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">colheight</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">maxlen</span><span class="p">))</span>
+                <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">newrows</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_construct_edgelist_compressed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs the part in the summary that prints the edge list in a</span>
+<span class="sd">        compressed format suitable for graphs with mostly small degrees.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_edges_header</span><span class="p">]</span>
+        <span class="n">arrow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_format</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">is_named</span><span class="p">():</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">edges</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">arrow</span> <span class="o">%</span> <span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">source</span><span class="p">],</span> <span class="n">names</span><span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">target</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">es</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">edges</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arrow</span> <span class="o">%</span> <span class="n">edge</span><span class="o">.</span><span class="n">tuple</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">es</span><span class="p">)</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_construct_edgelist_edgelist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs the part in the summary that prints the edge list in a</span>
+<span class="sd">        full edge list format.&quot;&quot;&quot;</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">())</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_table</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_rows</span><span class="p">(</span>
+            <span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_edge_attribute_iterator</span><span class="p">(</span><span class="n">attrs</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_rows</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_cols_align</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_infer_column_alignment</span><span class="p">(</span><span class="n">edge_attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_edges_header</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_construct_graph_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs the part in the summary that lists the graph attributes.&quot;&quot;&quot;</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">attributes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;+ graph attributes:&quot;</span><span class="p">]</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[[</span><span class="si">%s</span><span class="s2">]]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,))</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="p">[</span><span class="n">attr</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_construct_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs the part in the summary that lists the vertex attributes.&quot;&quot;&quot;</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_table</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_rows</span><span class="p">(</span>
+            <span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex_attribute_iterator</span><span class="p">(</span><span class="n">attrs</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_rows</span><span class="p">),</span>
+            <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_cols_align</span><span class="p">([</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_infer_column_alignment</span><span class="p">(</span><span class="n">vertex_attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">))</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;+ vertex attributes:&quot;</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_construct_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs the header part of the summary.&quot;&quot;&quot;</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">directed</span><span class="o">=</span><span class="s2">&quot;UD&quot;</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">is_directed</span><span class="p">()],</span>
+            <span class="n">named</span><span class="o">=</span><span class="s2">&quot;-N&quot;</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">is_named</span><span class="p">()],</span>
+            <span class="n">weighted</span><span class="o">=</span><span class="s2">&quot;-W&quot;</span><span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">is_weighted</span><span class="p">()],</span>
+            <span class="n">typed</span><span class="o">=</span><span class="s2">&quot;-T&quot;</span><span class="p">[</span><span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">()],</span>
+            <span class="n">vcount</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">vcount</span><span class="p">(),</span>
+            <span class="n">ecount</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">ecount</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">attributes</span><span class="p">():</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;IGRAPH </span><span class="si">%(directed)s%(named)s%(weighted)s%(typed)s</span><span class="s2"> &quot;</span>
+            <span class="s2">&quot;</span><span class="si">%(vcount)d</span><span class="s2"> </span><span class="si">%(ecount)d</span><span class="s2"> -- </span><span class="si">%(name)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">params</span>
+        <span class="p">]</span>
+
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (g)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">attributes</span><span class="p">())]</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (v)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">()))</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (e)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;+ attr: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attrs</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span><span class="o">.</span><span class="n">subsequent_indent</span> <span class="o">=</span> <span class="s2">&quot;  &quot;</span>
+                <span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span><span class="o">.</span><span class="n">subsequent_indent</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_edge_attribute_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an iterator that yields the rows of the edge attribute table</span>
+<span class="sd">        in the summary. C{attribute_order} must be a list containing the names of</span>
+<span class="sd">        the attributes to be presented in this table.&quot;&quot;&quot;</span>
+        <span class="n">arrow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_format</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">is_named</span><span class="p">():</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">es</span><span class="p">:</span>
+                <span class="n">formatted_edge</span> <span class="o">=</span> <span class="n">arrow</span> <span class="o">%</span> <span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">source</span><span class="p">],</span> <span class="n">names</span><span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">target</span><span class="p">])</span>
+                <span class="k">yield</span> <span class="p">[</span><span class="s2">&quot;[</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="n">edge</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">formatted_edge</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                    <span class="n">edge</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attribute_order</span>
+                <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">es</span><span class="p">:</span>
+                <span class="n">formatted_edge</span> <span class="o">=</span> <span class="n">arrow</span> <span class="o">%</span> <span class="n">edge</span><span class="o">.</span><span class="n">tuple</span>
+                <span class="k">yield</span> <span class="p">[</span><span class="s2">&quot;[</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="n">edge</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">formatted_edge</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                    <span class="n">edge</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attribute_order</span>
+                <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_infer_column_alignment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Infers the preferred alignment for the given vertex and edge attributes</span>
+<span class="sd">        in the tables by peeking into the attribute values of the first 100 vertices</span>
+<span class="sd">        or edges. Numeric attributes will be aligned right, everything else will be</span>
+<span class="sd">        aligned left.&quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">vertex_attrs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vs</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">vs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">vertex_attrs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">edge_attrs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">es</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">es</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">es</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">vs</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">is_numeric</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">is_numeric</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">is_numeric</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_new_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a new table to pretty-print vertex and edge attributes&quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Texttable</span><span class="p">(</span><span class="n">max_width</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_deco</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">table</span>
+
+    <span class="k">def</span> <span class="nf">_vertex_attribute_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an iterator that yields the rows of the vertex attribute table</span>
+<span class="sd">        in the summary. C{attribute_order} must be a list containing the names of</span>
+<span class="sd">        the attributes to be presented in this table.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">vs</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="s2">&quot;[</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="n">vertex</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">vertex</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attribute_order</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the summary representation as a string.&quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_header</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_graph_attributes</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_construct_graph_attributes</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_vertex_attributes</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_construct_vertex_attributes</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">ecount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Add the edge list</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_list_format</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_edge_attributes</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">():</span>
+                    <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;edgelist&quot;</span>
+                <span class="k">elif</span> <span class="n">median</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;compressed&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;adjlist&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_list_format</span>
+
+            <span class="n">method_name</span> <span class="o">=</span> <span class="s2">&quot;_construct_edgelist_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">format</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapper</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">line</span><span class="p">))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="summary"><a class="viewcode-back" href="../../igraph.html#igraph.summary.summary">[docs]</a><span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prints a summary of object o to a given stream</span>
+
+<span class="sd">    Positional and keyword arguments not explicitly mentioned here are passed</span>
+<span class="sd">    on to the underlying C{summary()} method of the object if it has any.</span>
+
+<span class="sd">    @param obj: the object about which a human-readable summary is requested.</span>
+<span class="sd">    @param stream: the stream to be used. If C{None}, the standard output</span>
+<span class="sd">      will be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">):</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

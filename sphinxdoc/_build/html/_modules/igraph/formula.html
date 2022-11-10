@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.formula &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">igraph</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>igraph.formula</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for igraph.formula</h1><div class="highlight"><pre>
+<span></span><span class="c1"># vim:ts=4:sw=4:sts=4:et</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implementation of L{igraph.Graph.Formula()}.</span>
+
+<span class="sd">You should use this module directly only if you have a very strong reason</span>
+<span class="sd">to do so. In almost all cases, you are better off with calling</span>
+<span class="sd">L{igraph.Graph.Formula()}.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">igraph.datatypes</span> <span class="kn">import</span> <span class="n">UniqueIdGenerator</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">tokenize</span>
+<span class="kn">import</span> <span class="nn">token</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;construct_graph_from_formula&quot;</span><span class="p">,)</span>
+
+
+<span class="k">def</span> <span class="nf">generate_edges</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses an edge specification from the head of the given</span>
+<span class="sd">    formula part and yields the following:</span>
+
+<span class="sd">      - startpoint(s) of the edge by vertex names</span>
+<span class="sd">      - endpoint(s) of the edge by names or an empty list if the vertices are</span>
+<span class="sd">        isolated</span>
+<span class="sd">      - a pair of bools to denote whether we had arrowheads at the start and end</span>
+<span class="sd">        vertices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">formula</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="p">[],</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">],</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+        <span class="k">return</span>
+
+    <span class="n">name_tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">token</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">NUMBER</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">STRING</span><span class="p">])</span>
+    <span class="n">edge_chars</span> <span class="o">=</span> <span class="s2">&quot;&lt;&gt;-+&quot;</span>
+    <span class="n">start_names</span><span class="p">,</span> <span class="n">end_names</span><span class="p">,</span> <span class="n">arrowheads</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+    <span class="n">parsing_vertices</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Tokenize the formula</span>
+    <span class="n">token_gen</span> <span class="o">=</span> <span class="n">tokenize</span><span class="o">.</span><span class="n">generate_tokens</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token_info</span> <span class="ow">in</span> <span class="n">token_gen</span><span class="p">:</span>
+        <span class="c1"># Do the state transitions</span>
+        <span class="n">token_type</span><span class="p">,</span> <span class="n">tok</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">token_info</span>
+        <span class="k">if</span> <span class="n">parsing_vertices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">ch</span> <span class="ow">in</span> <span class="n">edge_chars</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">tok</span><span class="p">)</span> <span class="ow">and</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">token</span><span class="o">.</span><span class="n">OP</span><span class="p">:</span>
+                <span class="n">parsing_vertices</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="c1"># Check the edge we currently have</span>
+                <span class="k">if</span> <span class="n">start_names</span> <span class="ow">and</span> <span class="n">end_names</span><span class="p">:</span>
+                    <span class="c1"># We have a whole edge</span>
+                    <span class="k">yield</span> <span class="n">start_names</span><span class="p">,</span> <span class="n">end_names</span><span class="p">,</span> <span class="n">arrowheads</span>
+                <span class="n">start_names</span><span class="p">,</span> <span class="n">end_names</span> <span class="o">=</span> <span class="n">end_names</span><span class="p">,</span> <span class="p">[]</span>
+                <span class="n">arrowheads</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edge_chars</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">tok</span><span class="p">):</span>
+                <span class="n">parsing_vertices</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">parsing_vertices</span><span class="p">:</span>
+            <span class="c1"># We are parsing vertex names at the moment</span>
+            <span class="k">if</span> <span class="n">token_type</span> <span class="ow">in</span> <span class="n">name_tokens</span><span class="p">:</span>
+                <span class="c1"># We found a vertex name</span>
+                <span class="k">if</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">token</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span>
+                    <span class="n">end_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">tok</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">end_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tok</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">tok</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span> <span class="ow">and</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">token</span><span class="o">.</span><span class="n">OP</span><span class="p">:</span>
+                <span class="c1"># Separating semicolon between vertex names, we just go on</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">token</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">:</span>
+                <span class="c1"># Newlines are fine</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">token</span><span class="o">.</span><span class="n">ENDMARKER</span><span class="p">:</span>
+                <span class="c1"># End markers are fine</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;invalid token found in edge specification: </span><span class="si">%s</span><span class="s2">; &quot;</span>
+                    <span class="s2">&quot;token_type=</span><span class="si">%r</span><span class="s2">; tok=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">token_type</span><span class="p">,</span> <span class="n">tok</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We are parsing an edge operator</span>
+            <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">tok</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;&gt;&quot;</span> <span class="ow">in</span> <span class="n">tok</span><span class="p">:</span>
+                    <span class="n">arrowheads</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">arrowheads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="s2">&quot;&gt;&quot;</span> <span class="ow">in</span> <span class="n">tok</span><span class="p">:</span>
+                <span class="n">arrowheads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="s2">&quot;+&quot;</span> <span class="ow">in</span> <span class="n">tok</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tok</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+                    <span class="n">arrowheads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tok</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">tok</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+                    <span class="n">arrowheads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># The final edge</span>
+    <span class="k">yield</span> <span class="n">start_names</span><span class="p">,</span> <span class="n">end_names</span><span class="p">,</span> <span class="n">arrowheads</span>
+
+
+<div class="viewcode-block" id="construct_graph_from_formula"><a class="viewcode-back" href="../../igraph.html#igraph.formula.construct_graph_from_formula">[docs]</a><span class="k">def</span> <span class="nf">construct_graph_from_formula</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">simplify</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Graph.Formula(formula = None, attr = &quot;name&quot;, simplify = True)</span>
+
+<span class="sd">    Generates a graph from a graph formula</span>
+
+<span class="sd">    A graph formula is a simple string representation of a graph.</span>
+<span class="sd">    It is very handy for creating small graphs quickly. The string</span>
+<span class="sd">    consists of vertex names separated by edge operators. An edge</span>
+<span class="sd">    operator is a sequence of dashes (C{-}) that may or may not</span>
+<span class="sd">    start with an arrowhead (C{&lt;} at the beginning of the sequence</span>
+<span class="sd">    or C{&gt;} at the end of the sequence). The edge operators can</span>
+<span class="sd">    be arbitrarily long, i.e., you may use as many dashes to draw</span>
+<span class="sd">    them as you like. This makes a total of four different edge</span>
+<span class="sd">    operators:</span>
+
+<span class="sd">      - C{-----} makes an undirected edge</span>
+<span class="sd">      - C{&lt;----} makes a directed edge pointing from the vertex</span>
+<span class="sd">        on the right hand side of the operator to the vertex on</span>
+<span class="sd">        the left hand side</span>
+<span class="sd">      - C{----&gt;} is the opposite of C{&lt;----}</span>
+<span class="sd">      - C{&lt;---&gt;} creates a mutual directed edge pair between</span>
+<span class="sd">        the two vertices</span>
+
+<span class="sd">    If you only use the undirected edge operator (C{-----}),</span>
+<span class="sd">    the graph will be undirected. Otherwise it will be directed.</span>
+<span class="sd">    Vertex names used in the formula will be assigned to the</span>
+<span class="sd">    C{name} vertex attribute of the graph.</span>
+
+<span class="sd">    Some simple examples:</span>
+
+<span class="sd">      &gt;&gt;&gt; from igraph import Graph</span>
+<span class="sd">      &gt;&gt;&gt; print(Graph.Formula())          # empty graph</span>
+<span class="sd">      IGRAPH UN-- 0 0 --</span>
+<span class="sd">      + attr: name (v)</span>
+<span class="sd">      &gt;&gt;&gt; g = Graph.Formula(&quot;A-B&quot;)        # undirected graph</span>
+<span class="sd">      &gt;&gt;&gt; g.vs[&quot;name&quot;]</span>
+<span class="sd">      [&#39;A&#39;, &#39;B&#39;]</span>
+<span class="sd">      &gt;&gt;&gt; print(g)</span>
+<span class="sd">      IGRAPH UN-- 2 1 --</span>
+<span class="sd">      + attr: name (v)</span>
+<span class="sd">      + edges (vertex names):</span>
+<span class="sd">      A--B</span>
+<span class="sd">      &gt;&gt;&gt; g.get_edgelist()</span>
+<span class="sd">      [(0, 1)]</span>
+<span class="sd">      &gt;&gt;&gt; g2 = Graph.Formula(&quot;A-----------B&quot;)</span>
+<span class="sd">      &gt;&gt;&gt; g2.isomorphic(g)</span>
+<span class="sd">      True</span>
+<span class="sd">      &gt;&gt;&gt; g = Graph.Formula(&quot;A  ---&gt;  B&quot;) # directed graph</span>
+<span class="sd">      &gt;&gt;&gt; g.vs[&quot;name&quot;]</span>
+<span class="sd">      [&#39;A&#39;, &#39;B&#39;]</span>
+<span class="sd">      &gt;&gt;&gt; print(g)</span>
+<span class="sd">      IGRAPH DN-- 2 1 --</span>
+<span class="sd">      + attr: name (v)</span>
+<span class="sd">      + edges (vertex names):</span>
+<span class="sd">      A-&gt;B</span>
+
+<span class="sd">    If you have may disconnected componnets, you can separate them</span>
+<span class="sd">    with commas. You can also specify isolated vertices:</span>
+
+<span class="sd">      &gt;&gt;&gt; g = Graph.Formula(&quot;A--B, C--D, E--F, G--H, I, J, K&quot;)</span>
+<span class="sd">      &gt;&gt;&gt; print(&quot;, &quot;.join(g.vs[&quot;name&quot;]))</span>
+<span class="sd">      A, B, C, D, E, F, G, H, I, J, K</span>
+<span class="sd">      &gt;&gt;&gt; g.connected_components().membership</span>
+<span class="sd">      [0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6]</span>
+
+<span class="sd">    The colon (C{:}) operator can be used to specify vertex sets.</span>
+<span class="sd">    If an edge operator connects two vertex sets, then every vertex</span>
+<span class="sd">    from the first vertex set will be connected to every vertex in</span>
+<span class="sd">    the second set:</span>
+
+<span class="sd">      &gt;&gt;&gt; g = Graph.Formula(&quot;A:B:C:D --- E:F:G&quot;)</span>
+<span class="sd">      &gt;&gt;&gt; g.isomorphic(Graph.Full_Bipartite(4, 3))</span>
+<span class="sd">      True</span>
+
+<span class="sd">    Note that you have to quote vertex names if they include spaces</span>
+<span class="sd">    or special characters:</span>
+
+<span class="sd">      &gt;&gt;&gt; g = Graph.Formula(&#39;&quot;this is&quot; +- &quot;a silly&quot; -+ &quot;graph here&quot;&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; g.vs[&quot;name&quot;]</span>
+<span class="sd">      [&#39;this is&#39;, &#39;a silly&#39;, &#39;graph here&#39;]</span>
+
+<span class="sd">    @param formula: the formula itself</span>
+<span class="sd">    @param attr: name of the vertex attribute where the vertex names</span>
+<span class="sd">                 will be stored</span>
+<span class="sd">    @param simplify: whether the simplify the constructed graph</span>
+<span class="sd">    @return: the constructed graph:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># If we have no formula, return an empty graph</span>
+    <span class="k">if</span> <span class="n">formula</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">vertex_attrs</span><span class="o">=</span><span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[]})</span>
+
+    <span class="n">vertex_ids</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">directed</span> <span class="o">=</span> <span class="n">UniqueIdGenerator</span><span class="p">(),</span> <span class="p">[],</span> <span class="kc">False</span>
+    <span class="c1"># Loop over each part in the formula</span>
+    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[,\n]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+        <span class="c1"># Strip leading and trailing whitespace in the part</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="c1"># Parse the first vertex specification from the formula</span>
+        <span class="k">for</span> <span class="n">start_names</span><span class="p">,</span> <span class="n">end_names</span><span class="p">,</span> <span class="n">arrowheads</span> <span class="ow">in</span> <span class="n">generate_edges</span><span class="p">(</span><span class="n">part</span><span class="p">):</span>
+            <span class="n">start_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex_ids</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">start_names</span><span class="p">]</span>
+            <span class="n">end_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex_ids</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">end_names</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">arrowheads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">arrowheads</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># This is an undirected edge. Do we have a directed graph?</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">directed</span><span class="p">:</span>
+                    <span class="c1"># Nope, add the edge</span>
+                    <span class="n">edges</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span> <span class="k">for</span> <span class="n">id1</span> <span class="ow">in</span> <span class="n">start_ids</span> <span class="k">for</span> <span class="n">id2</span> <span class="ow">in</span> <span class="n">end_ids</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This is a directed edge</span>
+                <span class="n">directed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">arrowheads</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">edges</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span> <span class="k">for</span> <span class="n">id1</span> <span class="ow">in</span> <span class="n">start_ids</span> <span class="k">for</span> <span class="n">id2</span> <span class="ow">in</span> <span class="n">end_ids</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arrowheads</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">edges</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">id2</span><span class="p">,</span> <span class="n">id1</span><span class="p">)</span> <span class="k">for</span> <span class="n">id1</span> <span class="ow">in</span> <span class="n">start_ids</span> <span class="k">for</span> <span class="n">id2</span> <span class="ow">in</span> <span class="n">end_ids</span><span class="p">)</span>
+
+    <span class="c1"># Grab the vertex names into a list</span>
+    <span class="n">vertex_attrs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">vertex_attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vertex_ids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="c1"># Construct and return the graph</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vertex_ids</span><span class="p">),</span> <span class="n">edges</span><span class="p">,</span> <span class="n">directed</span><span class="p">,</span> <span class="n">vertex_attrs</span><span class="o">=</span><span class="n">vertex_attrs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">simplify</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

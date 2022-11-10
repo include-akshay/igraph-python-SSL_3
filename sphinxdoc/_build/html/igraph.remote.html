@@ -1,0 +1,448 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.remote package &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="igraph.operators package" href="igraph.operators.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">igraph</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="igraph.html">igraph package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="igraph.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="igraph.app.html">igraph.app package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.html">igraph.drawing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.io.html">igraph.io package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.operators.html">igraph.operators package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">igraph.remote package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.No_of_nodes_for_broadcast">igraph.No_of_nodes_for_broadcast module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-adjacency-module">igraph.adjacency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.automorphisms">igraph.automorphisms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-basic-module">igraph.basic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-bipartite-module">igraph.bipartite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-clustering-module">igraph.clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-community-module">igraph.community module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.configuration">igraph.configuration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-cut-module">igraph.cut module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.datatypes">igraph.datatypes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.formula">igraph.formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.k_dense_network">igraph.k_dense_network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-layout-module">igraph.layout module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-matching-module">igraph.matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.minimum_frequency_bands">igraph.minimum_frequency_bands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-seq-module">igraph.seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-sparse-matrix-module">igraph.sparse_matrix module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.statistics">igraph.statistics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-structural-module">igraph.structural module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.summary">igraph.summary module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.utils">igraph.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.version">igraph.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">igraph</a> &raquo;</li>
+        
+          <li><a href="igraph.html">igraph package</a> &raquo;</li>
+        
+      <li>igraph.remote package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/igraph.remote.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="igraph-remote-package">
+<h1>igraph.remote package<a class="headerlink" href="#igraph-remote-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.remote.gephi">
+<span id="igraph-remote-gephi-module"></span><h2>igraph.remote.gephi module<a class="headerlink" href="#module-igraph.remote.gephi" title="Permalink to this headline">¶</a></h2>
+<p>Classes that help igraph communicate with Gephi (<a class="reference external" href="http://www.gephi.org">http://www.gephi.org</a>).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.remote.gephi.</span></span><span class="sig-name descname"><span class="pre">GephiConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8080</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiConnection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object that represents a connection to a Gephi master server.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiConnection.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiConnection.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiConnection.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes all the pending operations to the Gephi master server in a
+single request.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiConnection.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiConnection.flush"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiConnection.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes all the pending operations to the Gephi master server in a
+single request.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiConnection.url">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#igraph.remote.gephi.GephiConnection.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URL of the Gephi workspace where the data will be sent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiConnection.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiConnection.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiConnection.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends the given raw data to the Gephi streaming master server in an HTTP
+POST request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.remote.gephi.</span></span><span class="sig-name descname"><span class="pre">GephiGraphStreamer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that produces JSON event objects that stream an igraph graph to
+Gephi using the Gephi Graph Streaming API.</p>
+<p>The Gephi graph streaming format is a simple JSON-based format that can be used
+to post mutations to a graph (i.e. node and edge additions, removals and updates)
+to a remote component. For instance, one can open up Gephi (<a class="reference external" href="http://www.gephi.org">http://www.gephi.org</a>),
+install the Gephi graph streaming plugin and then send a graph from igraph
+straight into the Gephi window by using <cite>GephiGraphStreamer</cite> with the
+appropriate URL where Gephi is listening.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cStringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">igraph</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buf</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">streamer</span> <span class="o">=</span> <span class="n">GephiGraphStreamer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s2">&quot;A --&gt; B, B --&gt; C&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">streamer</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>        
+<span class="go">{&quot;an&quot;: {&quot;igraph:...:v:0&quot;: {&quot;name&quot;: &quot;A&quot;}}}</span>
+<span class="go">{&quot;an&quot;: {&quot;igraph:...:v:1&quot;: {&quot;name&quot;: &quot;B&quot;}}}</span>
+<span class="go">{&quot;an&quot;: {&quot;igraph:...:v:2&quot;: {&quot;name&quot;: &quot;C&quot;}}}</span>
+<span class="go">{&quot;ae&quot;: {&quot;igraph:...:e:0:1&quot;: {...}}}</span>
+<span class="go">{&quot;ae&quot;: {&quot;igraph:...:e:1:2&quot;: {...}}}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamer.iterjsonobj">
+<span class="sig-name descname"><span class="pre">iterjsonobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamer.iterjsonobj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamer.iterjsonobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over the JSON objects that build up the graph using the
+Gephi graph streaming API. The objects returned from this function are
+Python objects; they must be formatted with <code class="docutils literal notranslate"><span class="pre">json.dumps</span></code> before
+sending them to the destination.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamer.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamer.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamer.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Posts the given graph to the destination of the streamer using the
+given JSON encoder. When <code class="docutils literal notranslate"><span class="pre">encoder</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, it falls back to the
+default JSON encoder of the streamer in the <cite>encoder</cite> property.</p>
+<p><code class="docutils literal notranslate"><span class="pre">destination</span></code> must be a file-like object or an instance of
+<cite>GephiConnection</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamer.send_event">
+<span class="sig-name descname"><span class="pre">send_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flush</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamer.send_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamer.send_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a single JSON event to the given destination using the given
+JSON encoder.  When <code class="docutils literal notranslate"><span class="pre">encoder</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, it falls back to the
+default JSON encoder of the streamer in the <cite>encoder</cite> property.</p>
+<p><code class="docutils literal notranslate"><span class="pre">destination</span></code> must be a file-like object or an instance of
+<cite>GephiConnection</cite>.</p>
+<p>The method flushes the destination after sending the event. If you want
+to avoid this (e.g., because you are sending many events), set
+<code class="docutils literal notranslate"><span class="pre">flush</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.remote.gephi.</span></span><span class="sig-name descname"><span class="pre">GephiGraphStreamingAPIFormat</span></span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object that implements the Gephi graph streaming API format and returns
+Python objects corresponding to the events defined in the API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_add_edge_event">
+<span class="sig-name descname"><span class="pre">get_add_edge_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat.get_add_edge_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_add_edge_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Python object corresponding to the event that adds an edge
+with the given source, target, directednessr and attributes in the Gephi
+graph streaming API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_add_node_event">
+<span class="sig-name descname"><span class="pre">get_add_node_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat.get_add_node_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_add_node_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Python object corresponding to the event that adds a node
+with the given identifier and attributes in the Gephi graph streaming API.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">GephiGraphStreamingAPIFormat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_add_node_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">)</span>
+<span class="go">{&#39;an&#39;: {&#39;spam&#39;: {}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_add_node_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ham</span><span class="o">=</span><span class="s2">&quot;eggs&quot;</span><span class="p">))</span>
+<span class="go">{&#39;an&#39;: {&#39;spam&#39;: {&#39;ham&#39;: &#39;eggs&#39;}}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_change_edge_event">
+<span class="sig-name descname"><span class="pre">get_change_edge_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat.get_change_edge_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_change_edge_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Python object corresponding to the event that changes the
+attributes of some edge in the Gephi graph streaming API. The given attributes
+are merged into the existing ones; use C{None} as the attribute value to
+delete a given attribute.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">GephiGraphStreamingAPIFormat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_change_edge_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ham</span><span class="o">=</span><span class="s2">&quot;eggs&quot;</span><span class="p">))</span>
+<span class="go">{&#39;ce&#39;: {&#39;spam&#39;: {&#39;ham&#39;: &#39;eggs&#39;}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_change_edge_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ham</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+<span class="go">{&#39;ce&#39;: {&#39;spam&#39;: {&#39;ham&#39;: None}}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_change_node_event">
+<span class="sig-name descname"><span class="pre">get_change_node_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat.get_change_node_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_change_node_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Python object corresponding to the event that changes the
+attributes of some node in the Gephi graph streaming API. The given attributes
+are merged into the existing ones; use C{None} as the attribute value to
+delete a given attribute.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">GephiGraphStreamingAPIFormat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_change_node_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ham</span><span class="o">=</span><span class="s2">&quot;eggs&quot;</span><span class="p">))</span>
+<span class="go">{&#39;cn&#39;: {&#39;spam&#39;: {&#39;ham&#39;: &#39;eggs&#39;}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_change_node_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ham</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+<span class="go">{&#39;cn&#39;: {&#39;spam&#39;: {&#39;ham&#39;: None}}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_delete_edge_event">
+<span class="sig-name descname"><span class="pre">get_delete_edge_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat.get_delete_edge_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_delete_edge_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Python object corresponding to the event that deletes an
+edge with the given identifier in the Gephi graph streaming API.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">GephiGraphStreamingAPIFormat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_delete_edge_event</span><span class="p">(</span><span class="s2">&quot;spam:ham&quot;</span><span class="p">)</span>
+<span class="go">{&#39;de&#39;: {&#39;spam:ham&#39;: {}}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_delete_node_event">
+<span class="sig-name descname"><span class="pre">get_delete_node_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/remote/gephi.html#GephiGraphStreamingAPIFormat.get_delete_node_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.remote.gephi.GephiGraphStreamingAPIFormat.get_delete_node_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Python object corresponding to the event that deletes a
+node with the given identifier in the Gephi graph streaming API.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">GephiGraphStreamingAPIFormat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">get_delete_node_event</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">)</span>
+<span class="go">{&#39;dn&#39;: {&#39;spam&#39;: {}}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-igraph.remote">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-igraph.remote" title="Permalink to this headline">¶</a></h2>
+<p>Classes that help igraph communicate with remote applications.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="igraph.operators.html" class="btn btn-neutral float-left" title="igraph.operators package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

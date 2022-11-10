@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.drawing.cairo package &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="igraph.drawing.matplotlib package" href="igraph.drawing.matplotlib.html" />
+    <link rel="prev" title="igraph.drawing package" href="igraph.drawing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">igraph</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="igraph.html">igraph package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="igraph.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="igraph.app.html">igraph.app package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="igraph.drawing.html">igraph.drawing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.io.html">igraph.io package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.operators.html">igraph.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.remote.html">igraph.remote package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.No_of_nodes_for_broadcast">igraph.No_of_nodes_for_broadcast module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-adjacency-module">igraph.adjacency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.automorphisms">igraph.automorphisms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-basic-module">igraph.basic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-bipartite-module">igraph.bipartite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-clustering-module">igraph.clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-community-module">igraph.community module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.configuration">igraph.configuration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-cut-module">igraph.cut module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.datatypes">igraph.datatypes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.formula">igraph.formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.k_dense_network">igraph.k_dense_network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-layout-module">igraph.layout module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-matching-module">igraph.matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.minimum_frequency_bands">igraph.minimum_frequency_bands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-seq-module">igraph.seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-sparse-matrix-module">igraph.sparse_matrix module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.statistics">igraph.statistics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#igraph-structural-module">igraph.structural module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.summary">igraph.summary module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.utils">igraph.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph.version">igraph.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.html#module-igraph">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">igraph</a> &raquo;</li>
+        
+          <li><a href="igraph.html">igraph package</a> &raquo;</li>
+        
+          <li><a href="igraph.drawing.html">igraph.drawing package</a> &raquo;</li>
+        
+      <li>igraph.drawing.cairo package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/igraph.drawing.cairo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="igraph-drawing-cairo-package">
+<h1>igraph.drawing.cairo package<a class="headerlink" href="#igraph-drawing-cairo-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-base-module">
+<h2>igraph.drawing.cairo.base module<a class="headerlink" href="#igraph-drawing-cairo-base-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-coord-module">
+<h2>igraph.drawing.cairo.coord module<a class="headerlink" href="#igraph-drawing-cairo-coord-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-dendrogram-module">
+<h2>igraph.drawing.cairo.dendrogram module<a class="headerlink" href="#igraph-drawing-cairo-dendrogram-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-edge-module">
+<h2>igraph.drawing.cairo.edge module<a class="headerlink" href="#igraph-drawing-cairo-edge-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-graph-module">
+<h2>igraph.drawing.cairo.graph module<a class="headerlink" href="#igraph-drawing-cairo-graph-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-histogram-module">
+<h2>igraph.drawing.cairo.histogram module<a class="headerlink" href="#igraph-drawing-cairo-histogram-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-matrix-module">
+<h2>igraph.drawing.cairo.matrix module<a class="headerlink" href="#igraph-drawing-cairo-matrix-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-palette-module">
+<h2>igraph.drawing.cairo.palette module<a class="headerlink" href="#igraph-drawing-cairo-palette-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.drawing.cairo.plot">
+<span id="igraph-drawing-cairo-plot-module"></span><h2>igraph.drawing.cairo.plot module<a class="headerlink" href="#module-igraph.drawing.cairo.plot" title="Permalink to this headline">¶</a></h2>
+<p>Drawing and plotting routines for IGraph.</p>
+<p>IGraph has two plotting backends at the moment: Cairo and Matplotlib.</p>
+<p>The Cairo backend is dependent on the C{pycairo} or C{cairocffi} libraries that
+provide Python bindings to the popular U{Cairo library&lt;<a class="reference external" href="http://www.cairographics.org">http://www.cairographics.org</a>&gt;}.
+This means that if you don’t have U{pycairo&lt;<a class="reference external" href="http://www.cairographics.org/pycairo">http://www.cairographics.org/pycairo</a>&gt;}
+or U{cairocffi&lt;<a class="reference external" href="http://cairocffi.readthedocs.io">http://cairocffi.readthedocs.io</a>&gt;} installed, you won’t be able
+to use the Cairo plotting backend. Whenever the documentation refers to the
+C{pycairo} library, you can safely replace it with C{cairocffi} as the two are
+API-compatible.</p>
+<p>The Matplotlib backend uses the U{Matplotlib library&lt;<a class="reference external" href="https://matplotlib.org">https://matplotlib.org</a>&gt;}.
+You will need to install it from PyPI if you want to use the Matplotlib
+plotting backend.</p>
+<p>If you do not want to (or cannot) install any of the dependencies outlined
+above, you can still save the graph to an SVG file and view it from
+U{Mozilla Firefox&lt;<a class="reference external" href="http://www.mozilla.org/firefox">http://www.mozilla.org/firefox</a>&gt;} (free) or edit it in
+U{Inkscape&lt;<a class="reference external" href="http://www.inkscape.org">http://www.inkscape.org</a>&gt;} (free), U{Skencil&lt;<a class="reference external" href="http://www.skencil.org">http://www.skencil.org</a>&gt;}
+(formerly known as Sketch, also free) or Adobe Illustrator.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.cairo.plot.</span></span><span class="sig-name descname"><span class="pre">CairoPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing an arbitrary plot that uses the Cairo plotting
+backend.</p>
+<p>Objects that you can plot include graphs, matrices, palettes, clusterings,
+covers, and dendrograms.</p>
+<p>In Cairo, every plot has an associated surface object. The surface is an
+instance of C{cairo.Surface}, a member of the C{pycairo} library. The
+surface itself provides a unified API to various plotting targets like SVG
+files, X11 windows, PostScript files, PNG files and so on. C{igraph} does
+not usually know on which surface it is plotting at each point in time,
+since C{pycairo} takes care of the actual drawing. Everything that’s
+supported by C{pycairo} should be supported by this class as well.</p>
+<p>Current Cairo surfaces include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>C{cairo.GlitzSurface} – OpenGL accelerated surface for the X11
+Window System.</p></li>
+<li><p>C{cairo.ImageSurface} – memory buffer surface. Can be written to a
+C{PNG} image file.</p></li>
+<li><p>C{cairo.PDFSurface} – PDF document surface.</p></li>
+<li><p>C{cairo.PSSurface} – PostScript document surface.</p></li>
+<li><p>C{cairo.SVGSurface} – SVG (Scalable Vector Graphics) document surface.</p></li>
+<li><p>C{cairo.Win32Surface} – Microsoft Windows screen rendering.</p></li>
+<li><p>C{cairo.XlibSurface} – X11 Window System screen rendering.</p></li>
+</ul>
+</div></blockquote>
+<p>If you create a C{Plot} object with a string given as the target surface,
+the string will be treated as a filename, and its extension will decide
+which surface class will be used. Please note that not all surfaces might
+be available, depending on your C{pycairo} installation.</p>
+<p>A C{Plot} has an assigned default palette (see L{igraph.drawing.colors.Palette})
+which is used for plotting objects.</p>
+<p>A C{Plot} object also has a list of objects to be plotted with their
+respective bounding boxes, palettes and opacities. Palettes assigned to an
+object override the default palette of the plot. Objects can be added by the
+L{Plot.add} method and removed by the L{Plot.remove} method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an object to the plot.</p>
+<p>Arguments not specified here are stored and passed to the object’s
+plotting function when necessary. Since you are most likely interested
+in the arguments acceptable by graphs, see L{Graph.__plot__} for more
+details.</p>
+<p>&#64;param obj: the object to be added
+&#64;param bbox: the bounding box of the object. If C{None}, the object</p>
+<blockquote>
+<div><p>will fill the entire area of the plot.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param palette: the color palette used for drawing the object. If the</dt><dd><p>object tries to get a color assigned to a positive integer, it
+will use this palette. If C{None}, defaults to the global palette
+of the plot.</p>
+</dd>
+<dt>&#64;param opacity: the opacity of the object being plotted, in the range</dt><dd><p>0.0-1.0</p>
+</dd>
+</dl>
+<p>&#64;see: Graph.__plot__</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.background">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">background</span></span><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.background" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the background color of the plot. C{None} means a
+transparent background.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.bounding_box">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounding_box</span></span><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.bounding_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bounding box of the Cairo surface as a
+L{BoundingBox} object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the height of the Cairo surface on which the plot
+is drawn</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.mark_dirty">
+<span class="sig-name descname"><span class="pre">mark_dirty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.mark_dirty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.mark_dirty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marks the plot as dirty (should be redrawn)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.redraw">
+<span class="sig-name descname"><span class="pre">redraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.redraw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.redraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redraws the plot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an object from the plot.</p>
+<p>If the object has been added multiple times and no bounding box
+was specified, it removes the instance which occurs M{idx}th
+in the list of identical instances of the object.</p>
+<p>&#64;param obj: the object to be removed
+&#64;param bbox: optional bounding box specification for the object.</p>
+<blockquote>
+<div><p>If given, only objects with exactly this bounding box will be
+considered.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param idx: if multiple objects match the specification given by</dt><dd><p>M{obj} and M{bbox}, only the M{idx}th occurrence will be removed.</p>
+</dd>
+<dt>&#64;return: C{True} if the object has been removed successfully,</dt><dd><p>C{False} if the object was not on the plot at all or M{idx}
+was larger than the count of occurrences</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the plot.</p>
+<dl class="simple">
+<dt>&#64;param fname: the filename to save to. It is ignored if the surface</dt><dd><p>of the plot is not an C{ImageSurface}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.surface">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">surface</span></span><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Cairo surface on which the plot is drawn</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.plot.CairoPlot.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#igraph.drawing.cairo.plot.CairoPlot.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the width of the Cairo surface on which the plot
+is drawn</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-drawing-cairo-polygon-module">
+<h2>igraph.drawing.cairo.polygon module<a class="headerlink" href="#igraph-drawing-cairo-polygon-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-drawing-cairo-text-module">
+<h2>igraph.drawing.cairo.text module<a class="headerlink" href="#igraph-drawing-cairo-text-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.drawing.cairo.utils">
+<span id="igraph-drawing-cairo-utils-module"></span><h2>igraph.drawing.cairo.utils module<a class="headerlink" href="#module-igraph.drawing.cairo.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.utils.find_cairo">
+<span class="sig-prename descclassname"><span class="pre">igraph.drawing.cairo.utils.</span></span><span class="sig-name descname"><span class="pre">find_cairo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/igraph/drawing/cairo/utils.html#find_cairo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.utils.find_cairo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to import the <code class="docutils literal notranslate"><span class="pre">cairo</span></code> Python module if it is installed,
+also trying <code class="docutils literal notranslate"><span class="pre">cairocffi</span></code> (a drop-in replacement of <code class="docutils literal notranslate"><span class="pre">cairo</span></code>).
+Returns a fake module if everything fails.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-drawing-cairo-vertex-module">
+<h2>igraph.drawing.cairo.vertex module<a class="headerlink" href="#igraph-drawing-cairo-vertex-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.drawing.cairo">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-igraph.drawing.cairo" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.drawing.cairo.</span></span><span class="sig-name descname"><span class="pre">CairoPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing an arbitrary plot that uses the Cairo plotting
+backend.</p>
+<p>Objects that you can plot include graphs, matrices, palettes, clusterings,
+covers, and dendrograms.</p>
+<p>In Cairo, every plot has an associated surface object. The surface is an
+instance of C{cairo.Surface}, a member of the C{pycairo} library. The
+surface itself provides a unified API to various plotting targets like SVG
+files, X11 windows, PostScript files, PNG files and so on. C{igraph} does
+not usually know on which surface it is plotting at each point in time,
+since C{pycairo} takes care of the actual drawing. Everything that’s
+supported by C{pycairo} should be supported by this class as well.</p>
+<p>Current Cairo surfaces include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>C{cairo.GlitzSurface} – OpenGL accelerated surface for the X11
+Window System.</p></li>
+<li><p>C{cairo.ImageSurface} – memory buffer surface. Can be written to a
+C{PNG} image file.</p></li>
+<li><p>C{cairo.PDFSurface} – PDF document surface.</p></li>
+<li><p>C{cairo.PSSurface} – PostScript document surface.</p></li>
+<li><p>C{cairo.SVGSurface} – SVG (Scalable Vector Graphics) document surface.</p></li>
+<li><p>C{cairo.Win32Surface} – Microsoft Windows screen rendering.</p></li>
+<li><p>C{cairo.XlibSurface} – X11 Window System screen rendering.</p></li>
+</ul>
+</div></blockquote>
+<p>If you create a C{Plot} object with a string given as the target surface,
+the string will be treated as a filename, and its extension will decide
+which surface class will be used. Please note that not all surfaces might
+be available, depending on your C{pycairo} installation.</p>
+<p>A C{Plot} has an assigned default palette (see L{igraph.drawing.colors.Palette})
+which is used for plotting objects.</p>
+<p>A C{Plot} object also has a list of objects to be plotted with their
+respective bounding boxes, palettes and opacities. Palettes assigned to an
+object override the default palette of the plot. Objects can be added by the
+L{Plot.add} method and removed by the L{Plot.remove} method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an object to the plot.</p>
+<p>Arguments not specified here are stored and passed to the object’s
+plotting function when necessary. Since you are most likely interested
+in the arguments acceptable by graphs, see L{Graph.__plot__} for more
+details.</p>
+<p>&#64;param obj: the object to be added
+&#64;param bbox: the bounding box of the object. If C{None}, the object</p>
+<blockquote>
+<div><p>will fill the entire area of the plot.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param palette: the color palette used for drawing the object. If the</dt><dd><p>object tries to get a color assigned to a positive integer, it
+will use this palette. If C{None}, defaults to the global palette
+of the plot.</p>
+</dd>
+<dt>&#64;param opacity: the opacity of the object being plotted, in the range</dt><dd><p>0.0-1.0</p>
+</dd>
+</dl>
+<p>&#64;see: Graph.__plot__</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.background">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">background</span></span><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.background" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the background color of the plot. C{None} means a
+transparent background.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.bounding_box">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounding_box</span></span><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.bounding_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bounding box of the Cairo surface as a
+L{BoundingBox} object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the height of the Cairo surface on which the plot
+is drawn</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.mark_dirty">
+<span class="sig-name descname"><span class="pre">mark_dirty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.mark_dirty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.mark_dirty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marks the plot as dirty (should be redrawn)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.redraw">
+<span class="sig-name descname"><span class="pre">redraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.redraw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.redraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redraws the plot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an object from the plot.</p>
+<p>If the object has been added multiple times and no bounding box
+was specified, it removes the instance which occurs M{idx}th
+in the list of identical instances of the object.</p>
+<p>&#64;param obj: the object to be removed
+&#64;param bbox: optional bounding box specification for the object.</p>
+<blockquote>
+<div><p>If given, only objects with exactly this bounding box will be
+considered.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param idx: if multiple objects match the specification given by</dt><dd><p>M{obj} and M{bbox}, only the M{idx}th occurrence will be removed.</p>
+</dd>
+<dt>&#64;return: C{True} if the object has been removed successfully,</dt><dd><p>C{False} if the object was not on the plot at all or M{idx}
+was larger than the count of occurrences</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/drawing/cairo/plot.html#CairoPlot.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the plot.</p>
+<dl class="simple">
+<dt>&#64;param fname: the filename to save to. It is ignored if the surface</dt><dd><p>of the plot is not an C{ImageSurface}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.surface">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">surface</span></span><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Cairo surface on which the plot is drawn</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.drawing.cairo.CairoPlot.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#igraph.drawing.cairo.CairoPlot.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the width of the Cairo surface on which the plot
+is drawn</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="igraph.drawing.matplotlib.html" class="btn btn-neutral float-right" title="igraph.drawing.matplotlib package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="igraph.drawing.html" class="btn btn-neutral float-left" title="igraph.drawing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

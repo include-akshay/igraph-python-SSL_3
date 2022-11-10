@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph.configuration &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">igraph</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>igraph.configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for igraph.configuration</h1><div class="highlight"><pre>
+<span></span><span class="c1"># vim:ts=4:sw=4:sts=4:et</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Configuration framework for igraph.</span>
+
+<span class="sd">igraph has some parameters which usually affect the behaviour of many functions.</span>
+<span class="sd">This module provides the framework for altering and querying igraph parameters</span>
+<span class="sd">as well as saving them to and retrieving them from disk.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
+
+
+<div class="viewcode-block" id="Configuration"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration">[docs]</a><span class="k">class</span> <span class="nc">Configuration</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class representing igraph configuration details.</span>
+
+<span class="sd">    Note that there is one primary instance of this class, which is used by</span>
+<span class="sd">    igraph itself to retrieve configuration parameters when needed. You can</span>
+<span class="sd">    access this instance with the L{instance()} method. You I{may} construct</span>
+<span class="sd">    other instances by invoking the constructor directly, but these instances</span>
+<span class="sd">    will I{not} affect igraph&#39;s behaviour. If you are interested in configuring</span>
+<span class="sd">    igraph, use L{igraph.config} to get hold of the singleton instance and then</span>
+<span class="sd">    modify it.</span>
+
+<span class="sd">    General ideas</span>
+<span class="sd">    =============</span>
+
+<span class="sd">    The configuration of igraph is stored in the form of name-value pairs.</span>
+<span class="sd">    This object provides an interface to the configuration data using the</span>
+<span class="sd">    syntax known from dict:</span>
+
+<span class="sd">      &gt;&gt;&gt; c = Configuration()</span>
+<span class="sd">      &gt;&gt;&gt; c[&quot;general.verbose&quot;] = True</span>
+<span class="sd">      &gt;&gt;&gt; print(c[&quot;general.verbose&quot;])</span>
+<span class="sd">      True</span>
+
+<span class="sd">    Configuration keys are organized into sections, and the name to be used</span>
+<span class="sd">    for a given key is always in the form C{section.keyname}, like</span>
+<span class="sd">    C{general.verbose} in the example above. In that case, C{general} is the</span>
+<span class="sd">    name of the configuration section, and C{verbose} is the name of the key.</span>
+<span class="sd">    If the name of the section is omitted, it defaults to C{general}, so</span>
+<span class="sd">    C{general.verbose} can be referred to as C{verbose}:</span>
+
+<span class="sd">      &gt;&gt;&gt; c = Configuration()</span>
+<span class="sd">      &gt;&gt;&gt; c[&quot;verbose&quot;] = True</span>
+<span class="sd">      &gt;&gt;&gt; print(c[&quot;general.verbose&quot;])</span>
+<span class="sd">      True</span>
+
+<span class="sd">    User-level configuration is stored in C{~/.igraphrc} per default on Linux</span>
+<span class="sd">    and Mac OS X systems, or in C{C:\\Documents and Settings\\username\\.igraphrc}</span>
+<span class="sd">    on Windows systems. However, this configuration is read only when C{igraph}</span>
+<span class="sd">    is launched through its shell interface defined in L{igraph.app.shell}.</span>
+<span class="sd">    This behaviour might change before version 1.0.</span>
+
+<span class="sd">    Known configuration keys</span>
+<span class="sd">    ========================</span>
+
+<span class="sd">    The known configuration keys are presented below, sorted by section. When</span>
+<span class="sd">    referring to them in program code, don&#39;t forget to add the section name,</span>
+<span class="sd">    expect in the case of section C{general}.</span>
+
+<span class="sd">    General settings</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    These settings are all stored in section C{general}.</span>
+
+<span class="sd">        - B{shells}: the list of preferred Python shells to be used with the</span>
+<span class="sd">          command-line C{igraph} script. The shells in the list are tried one</span>
+<span class="sd">          by one until any of them is found on the system. C{igraph} functions</span>
+<span class="sd">          are then imported into the main namespace of the shell and the shell</span>
+<span class="sd">          is launched. Known shells and their respective class names to be</span>
+<span class="sd">          used can be found in L{igraph.app.shell}. Example:</span>
+<span class="sd">          C{IPythonShell, ClassicPythonShell}. This is the default, by the way.</span>
+<span class="sd">        - B{verbose}: whether L{igraph} should talk more than really necessary.</span>
+<span class="sd">          For instance, if set to C{True}, some functions display progress bars.</span>
+
+<span class="sd">    Plotting settings</span>
+<span class="sd">    -----------------</span>
+
+<span class="sd">    These settings specify the default values used by plotting functions.</span>
+<span class="sd">    They are all stored in section C{plotting}.</span>
+
+<span class="sd">        - B{backend}: either &quot;cairo&quot; if you want to use Cairo for plotting</span>
+<span class="sd">          or &quot;matplotlib&quot; if you want to use the Matplotlib plotting backend.</span>
+
+<span class="sd">        - B{layout}: default graph layout algorithm to be used.</span>
+
+<span class="sd">        - B{mark_groups}: whether to mark the clusters by polygons when</span>
+<span class="sd">          plotting a clustering object.</span>
+
+<span class="sd">        - B{palette}: default palette to be used for converting integer</span>
+<span class="sd">          numbers to colors. See L{colors.Palette} for more information.</span>
+<span class="sd">          Valid palette names are stored in C{colors.palettes}.</span>
+
+<span class="sd">        - B{wrap_labels}: whether to try to wrap the labels of the</span>
+<span class="sd">          vertices automatically if they don&#39;t fit within the vertex.</span>
+<span class="sd">          Default: C{False}.</span>
+
+<span class="sd">    Shell settings</span>
+<span class="sd">    --------------</span>
+
+<span class="sd">    These settings specify options for external environments in which igraph is</span>
+<span class="sd">    embedded (e.g., IPython and its Qt console). These settings are stored in</span>
+<span class="sd">    section C{shell}.</span>
+
+<span class="sd">        - B{ipython.inlining.Plot}: whether to show instances of the</span>
+<span class="sd">          L{Plot&lt;drawing.Plot&gt;} class</span>
+<span class="sd">          inline in IPython&#39;s console if the console supports it. Default: C{True}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Configuration.Types"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.Types">[docs]</a>    <span class="k">class</span> <span class="nc">Types</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Static class for the implementation of custom getter/setter functions</span>
+<span class="sd">        for configuration keys&quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+<div class="viewcode-block" id="Configuration.Types.setboolean"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.Types.setboolean">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">setboolean</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Sets a boolean value in the given configuration object.</span>
+
+<span class="sd">            @param obj: a configuration object</span>
+<span class="sd">            @param section: the section of the value to be set</span>
+<span class="sd">            @param key: the key of the value to be set</span>
+<span class="sd">            @param value: the value itself. C{0}, C{false}, C{no} and C{off}</span>
+<span class="sd">              means false, C{1}, C{true}, C{yes} and C{on} means true,</span>
+<span class="sd">              everything else results in a C{ValueError} being thrown.</span>
+<span class="sd">              Values are case insensitive</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;on&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;value cannot be coerced to boolean type&quot;</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Configuration.Types.setint"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.Types.setint">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">setint</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Sets an integer value in the given configuration object.</span>
+
+<span class="sd">            @param obj: a configuration object</span>
+<span class="sd">            @param section: the section of the value to be set</span>
+<span class="sd">            @param key: the key of the value to be set</span>
+<span class="sd">            @param value: the value itself.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Configuration.Types.setfloat"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.Types.setfloat">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">setfloat</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Sets a float value in the given configuration object.</span>
+
+<span class="sd">            Note that float values are converted to strings in the configuration</span>
+<span class="sd">            object, which may lead to some precision loss.</span>
+
+<span class="sd">            @param obj: a configuration object</span>
+<span class="sd">            @param section: the section of the value to be set</span>
+<span class="sd">            @param key: the key of the value to be set</span>
+<span class="sd">            @param value: the value itself.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span></div></div>
+
+    <span class="n">_types</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;boolean&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;getter&quot;</span><span class="p">:</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">getboolean</span><span class="p">,</span> <span class="s2">&quot;setter&quot;</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">setboolean</span><span class="p">},</span>
+        <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;getter&quot;</span><span class="p">:</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">getint</span><span class="p">,</span> <span class="s2">&quot;setter&quot;</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">setint</span><span class="p">},</span>
+        <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;getter&quot;</span><span class="p">:</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">getfloat</span><span class="p">,</span> <span class="s2">&quot;setter&quot;</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">setfloat</span><span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="n">_sections</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;apps&quot;</span><span class="p">,</span> <span class="s2">&quot;plotting&quot;</span><span class="p">,</span> <span class="s2">&quot;remote&quot;</span><span class="p">,</span> <span class="s2">&quot;shell&quot;</span><span class="p">)</span>
+    <span class="n">_definitions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;general.shells&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;IPythonShell,ClassicPythonShell&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;general.verbose&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;plotting.backend&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;cairo&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;plotting.layout&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;plotting.mark_groups&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;plotting.palette&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;gray&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;plotting.wrap_labels&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;shell.ipython.inlining.Plot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="c1"># The singleton instance we are using throughout other modules</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new configuration instance.</span>
+
+<span class="sd">        @param filename: file or file pointer to be read. Can be omitted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Create default sections</span>
+        <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span>
+        <span class="c1"># Create default values</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;default&quot;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the filename associated to the object.</span>
+
+<span class="sd">        It is usually the name of the configuration file that was used when</span>
+<span class="sd">        creating the object. L{Configuration.load} always overwrites it with</span>
+<span class="sd">        the filename given to it. If C{None}, the configuration was either</span>
+<span class="sd">        created from scratch or it was updated from a stream without name</span>
+<span class="sd">        information.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+
+    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function that returns the value of a given key in a</span>
+<span class="sd">        given section.&quot;&quot;&quot;</span>
+        <span class="n">definition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="p">{})</span>
+        <span class="n">getter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">getter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_types</span><span class="p">[</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;getter&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">getter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">getter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">get</span>
+        <span class="k">return</span> <span class="n">getter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_item_to_section_key</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts an item description to a section-key pair.</span>
+
+<span class="sd">        @param item: the item to be converted</span>
+<span class="sd">        @return: if C{item} contains a period (C{.}), it is splitted into two parts</span>
+<span class="sd">          at the first period, then the two parts are returned, so the part before</span>
+<span class="sd">          the period is the section. If C{item} does not contain a period, the</span>
+<span class="sd">          section is assumed to be C{general}, and the second part of the returned</span>
+<span class="sd">          pair contains C{item} unchanged&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks whether the given configuration item is set.</span>
+
+<span class="sd">        @param item: the configuration key to check.</span>
+<span class="sd">        @return: C{True} if the key has an associated value, C{False} otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_section_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the given configuration item.</span>
+
+<span class="sd">        @param item: the configuration key to retrieve.</span>
+<span class="sd">        @return: the configuration value&quot;&quot;&quot;</span>
+        <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_section_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+            <span class="c1"># Special case: retrieving all the keys within a section and</span>
+            <span class="c1"># returning it in a dict</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the given configuration item.</span>
+
+<span class="sd">        @param item: the configuration key to set</span>
+<span class="sd">        @param value: the new value of the configuration key</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_section_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">definition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="p">{})</span>
+        <span class="n">setter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">setter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_types</span><span class="p">[</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;setter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">setter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">setter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">set</span>
+        <span class="k">return</span> <span class="n">setter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deletes the given item from the configuration.</span>
+
+<span class="sd">        If the item has a default value, the default value is written back instead</span>
+<span class="sd">        of the current value. Without a default value, the item is really deleted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_section_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">definition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="s2">&quot;default&quot;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">remove_option</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Configuration.has_key"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.has_key">[docs]</a>    <span class="k">def</span> <span class="nf">has_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if the configuration has a given key.</span>
+
+<span class="sd">        @param item: the key being sought&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">section</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Configuration.load"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the configuration from the given file.</span>
+
+<span class="sd">        @param stream: name of a file or a file object. The configuration will be loaded</span>
+<span class="sd">          from here. Can be omitted, in this case, the user-level configuration is</span>
+<span class="sd">          loaded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">stream</span> <span class="ow">or</span> <span class="n">get_user_config_file</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+            <span class="n">file_was_open</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">readfp</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_was_open</span><span class="p">:</span>
+            <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Configuration.save"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves the configuration.</span>
+
+<span class="sd">        @param stream: name of a file or a file object. The configuration will be saved</span>
+<span class="sd">          there. Can be omitted, in this case, the user-level configuration file will</span>
+<span class="sd">          be overwritten.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">stream</span> <span class="ow">or</span> <span class="n">get_user_config_file</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;write&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;close&quot;</span><span class="p">):</span>
+            <span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+            <span class="n">file_was_open</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_was_open</span><span class="p">:</span>
+            <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Configuration.instance"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.Configuration.instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the single instance of the configuration object.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cfile</span> <span class="o">=</span> <span class="n">get_user_config_file</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cfile</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="c1"># No config file yet, whatever</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span></div></div>
+
+
+<div class="viewcode-block" id="get_user_config_file"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.get_user_config_file">[docs]</a><span class="k">def</span> <span class="nf">get_user_config_file</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns the path where the user-level configuration file is stored&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~/.igraphrc&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../igraph.html#igraph.configuration.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Default mechanism to initiate igraph configuration</span>
+
+<span class="sd">    This method loads the user-specific configuration file from the</span>
+<span class="sd">    user&#39;s home directory, or if it does not exist, creates a default</span>
+<span class="sd">    configuration.</span>
+
+<span class="sd">    The method is safe to be called multiple times, it will not parse</span>
+<span class="sd">    the configuration file twice.</span>
+
+<span class="sd">    @return: the L{Configuration} object loaded or created.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

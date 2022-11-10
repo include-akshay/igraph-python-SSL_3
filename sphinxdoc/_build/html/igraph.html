@@ -1,0 +1,1470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>igraph package &mdash; Igraph 1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="igraph.app package" href="igraph.app.html" />
+    <link rel="prev" title="igraph" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Igraph
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">igraph</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">igraph package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="igraph.app.html">igraph.app package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.html">igraph.drawing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.io.html">igraph.io package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.operators.html">igraph.operators package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.remote.html">igraph.remote package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.No_of_nodes_for_broadcast">igraph.No_of_nodes_for_broadcast module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-adjacency-module">igraph.adjacency module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.automorphisms">igraph.automorphisms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-basic-module">igraph.basic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-bipartite-module">igraph.bipartite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-clustering-module">igraph.clustering module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-community-module">igraph.community module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.configuration">igraph.configuration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-cut-module">igraph.cut module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.datatypes">igraph.datatypes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.formula">igraph.formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.k_dense_network">igraph.k_dense_network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-layout-module">igraph.layout module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-matching-module">igraph.matching module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.minimum_frequency_bands">igraph.minimum_frequency_bands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-seq-module">igraph.seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-sparse-matrix-module">igraph.sparse_matrix module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.statistics">igraph.statistics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#igraph-structural-module">igraph.structural module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.summary">igraph.summary module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.utils">igraph.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph.version">igraph.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-igraph">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Igraph</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">igraph</a> &raquo;</li>
+        
+      <li>igraph package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/igraph.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="igraph-package">
+<h1>igraph package<a class="headerlink" href="#igraph-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="igraph.app.html">igraph.app package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.app.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.app.html#igraph-app-shell-module">igraph.app.shell module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.app.html#module-igraph.app">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="igraph.drawing.html">igraph.drawing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="igraph.drawing.cairo.html">igraph.drawing.cairo package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-base-module">igraph.drawing.cairo.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-coord-module">igraph.drawing.cairo.coord module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-dendrogram-module">igraph.drawing.cairo.dendrogram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-edge-module">igraph.drawing.cairo.edge module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-graph-module">igraph.drawing.cairo.graph module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-histogram-module">igraph.drawing.cairo.histogram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-matrix-module">igraph.drawing.cairo.matrix module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-palette-module">igraph.drawing.cairo.palette module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#module-igraph.drawing.cairo.plot">igraph.drawing.cairo.plot module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-polygon-module">igraph.drawing.cairo.polygon module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-text-module">igraph.drawing.cairo.text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#module-igraph.drawing.cairo.utils">igraph.drawing.cairo.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#igraph-drawing-cairo-vertex-module">igraph.drawing.cairo.vertex module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.cairo.html#module-igraph.drawing.cairo">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.drawing.matplotlib.html">igraph.drawing.matplotlib package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-dendrogram-module">igraph.drawing.matplotlib.dendrogram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-edge-module">igraph.drawing.matplotlib.edge module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-graph-module">igraph.drawing.matplotlib.graph module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-histogram-module">igraph.drawing.matplotlib.histogram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-matrix-module">igraph.drawing.matplotlib.matrix module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-palette-module">igraph.drawing.matplotlib.palette module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#module-igraph.drawing.matplotlib.polygon">igraph.drawing.matplotlib.polygon module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#module-igraph.drawing.matplotlib.utils">igraph.drawing.matplotlib.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#igraph-drawing-matplotlib-vertex-module">igraph.drawing.matplotlib.vertex module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.matplotlib.html#module-igraph.drawing.matplotlib">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="igraph.drawing.plotly.html">igraph.drawing.plotly package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#igraph-drawing-plotly-edge-module">igraph.drawing.plotly.edge module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#igraph-drawing-plotly-graph-module">igraph.drawing.plotly.graph module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#module-igraph.drawing.plotly.polygon">igraph.drawing.plotly.polygon module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#module-igraph.drawing.plotly.utils">igraph.drawing.plotly.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#igraph-drawing-plotly-vertex-module">igraph.drawing.plotly.vertex module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="igraph.drawing.plotly.html#module-igraph.drawing.plotly">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#igraph-drawing-baseclasses-module">igraph.drawing.baseclasses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#module-igraph.drawing.colors">igraph.drawing.colors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#igraph-drawing-graph-module">igraph.drawing.graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#igraph-drawing-metamagic-module">igraph.drawing.metamagic module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#igraph-drawing-shapes-module">igraph.drawing.shapes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#igraph-drawing-text-module">igraph.drawing.text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#module-igraph.drawing.utils">igraph.drawing.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.drawing.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="igraph.io.html">igraph.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#igraph-io-adjacency-module">igraph.io.adjacency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#module-igraph.io.bipartite">igraph.io.bipartite module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#igraph-io-files-module">igraph.io.files module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#igraph-io-images-module">igraph.io.images module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#module-igraph.io.libraries">igraph.io.libraries module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#module-igraph.io.objects">igraph.io.objects module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#module-igraph.io.random">igraph.io.random module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#module-igraph.io.utils">igraph.io.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.io.html#module-igraph.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="igraph.operators.html">igraph.operators package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.operators.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.operators.html#igraph-operators-functions-module">igraph.operators.functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.operators.html#igraph-operators-methods-module">igraph.operators.methods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.operators.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="igraph.remote.html">igraph.remote package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="igraph.remote.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.remote.html#module-igraph.remote.gephi">igraph.remote.gephi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igraph.remote.html#module-igraph.remote">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.No_of_nodes_for_broadcast">
+<span id="igraph-no-of-nodes-for-broadcast-module"></span><h2>igraph.No_of_nodes_for_broadcast module<a class="headerlink" href="#module-igraph.No_of_nodes_for_broadcast" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.No_of_nodes_for_broadcast.Number_of_sources">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.No_of_nodes_for_broadcast.</span></span><span class="sig-name descname"><span class="pre">Number_of_sources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/No_of_nodes_for_broadcast.html#Number_of_sources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.No_of_nodes_for_broadcast.Number_of_sources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>It finds the names of the nodes,the network admin should send a message
+in order to get it broadcasted to all the nodes/users/systems in the provided
+network.
+This is to help a network admin by getting his/her work get minimized by providing
+them the least number of node names to send a message</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.No_of_nodes_for_broadcast.Number_of_sources.SCC_helper">
+<span class="sig-name descname"><span class="pre">SCC_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visited</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/No_of_nodes_for_broadcast.html#Number_of_sources.SCC_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.No_of_nodes_for_broadcast.Number_of_sources.SCC_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the main function which are the Strongly connected components
+So that it can get hand on the nodes to which the admin should send the msg inorder
+to get it broadcasted</p>
+<p>&#64;param v : node through which we will do the exploration on the reversed graph</p>
+<dl class="simple">
+<dt>&#64;param visited :the array to keep check if a certain has been visited already</dt><dd><p>in order to avoid into getting infinite loops.</p>
+</dd>
+<dt>&#64;return<span class="classifier">A list which contains all the nodes of a specific Strongly Connected</span></dt><dd><p>component.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.No_of_nodes_for_broadcast.Number_of_sources.addEdge">
+<span class="sig-name descname"><span class="pre">addEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/No_of_nodes_for_broadcast.html#Number_of_sources.addEdge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.No_of_nodes_for_broadcast.Number_of_sources.addEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>to add edges provided by the user in the adjacancy list.
+&#64;param u : The souce node.</p>
+<p>&#64;param v : The destination node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.No_of_nodes_for_broadcast.Number_of_sources.explore">
+<span class="sig-name descname"><span class="pre">explore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visited</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stack</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/No_of_nodes_for_broadcast.html#Number_of_sources.explore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.No_of_nodes_for_broadcast.Number_of_sources.explore" title="Permalink to this definition">¶</a></dt>
+<dd><p>this is inorder to perform DFS on the given graph and push the nodes
+in the stack according to their post order numbering.
+And which will be used later on to convert the provided graph with it’s
+reverse graph.
+&#64;param v: the node whose expolration is supposed to be done</p>
+<dl class="simple">
+<dt>&#64;param visited<span class="classifier">the array to keep check if a certain has been visited already</span></dt><dd><p>in order to avoid into getting infinite loops</p>
+</dd>
+<dt>&#64; param stack<span class="classifier">a stack for us to keep track of the nodes according to their</span></dt><dd><p>post numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.No_of_nodes_for_broadcast.Number_of_sources.nodes_for_broadcasting">
+<span class="sig-name descname"><span class="pre">nodes_for_broadcasting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/No_of_nodes_for_broadcast.html#Number_of_sources.nodes_for_broadcasting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.No_of_nodes_for_broadcast.Number_of_sources.nodes_for_broadcasting" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the main method which would be called by the user in order to get
+results for the query : How many nodes should the network admin send a message
+in order to get it broadcasted to all the nodes/users/systems in the provided
+network.</p>
+<p>&#64;returns : the names of the nodes to whom the network admin should send
+the message inorder to get the message broadcasted</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.No_of_nodes_for_broadcast.Number_of_sources.reverse_graph">
+<span class="sig-name descname"><span class="pre">reverse_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/No_of_nodes_for_broadcast.html#Number_of_sources.reverse_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.No_of_nodes_for_broadcast.Number_of_sources.reverse_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is method which is used to reverse graph G=(V, E) to G=(V’,E’).
+Such that for every edge (u,v) in E, there will exist an edge(v,u) in
+E’ in G’.
+This way we can have reverse graph which will be used later on to decide the
+requirements of the class
+&#64;param : self, it is the object that called this function
+&#64;return : reversed Graph G’</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-adjacency-module">
+<h2>igraph.adjacency module<a class="headerlink" href="#igraph-adjacency-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.automorphisms">
+<span id="igraph-automorphisms-module"></span><h2>igraph.automorphisms module<a class="headerlink" href="#module-igraph.automorphisms" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-basic-module">
+<h2>igraph.basic module<a class="headerlink" href="#igraph-basic-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-bipartite-module">
+<h2>igraph.bipartite module<a class="headerlink" href="#igraph-bipartite-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-clustering-module">
+<h2>igraph.clustering module<a class="headerlink" href="#igraph-clustering-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-community-module">
+<h2>igraph.community module<a class="headerlink" href="#igraph-community-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.configuration">
+<span id="igraph-configuration-module"></span><h2>igraph.configuration module<a class="headerlink" href="#module-igraph.configuration" title="Permalink to this headline">¶</a></h2>
+<p>Configuration framework for igraph.</p>
+<p>igraph has some parameters which usually affect the behaviour of many functions.
+This module provides the framework for altering and querying igraph parameters
+as well as saving them to and retrieving them from disk.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.configuration.</span></span><span class="sig-name descname"><span class="pre">Configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing igraph configuration details.</p>
+<p>Note that there is one primary instance of this class, which is used by
+igraph itself to retrieve configuration parameters when needed. You can
+access this instance with the L{instance()} method. You I{may} construct
+other instances by invoking the constructor directly, but these instances
+will I{not} affect igraph’s behaviour. If you are interested in configuring
+igraph, use L{igraph.config} to get hold of the singleton instance and then
+modify it.</p>
+<p>The configuration of igraph is stored in the form of name-value pairs.
+This object provides an interface to the configuration data using the
+syntax known from dict:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;general.verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;general.verbose&quot;</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Configuration keys are organized into sections, and the name to be used
+for a given key is always in the form C{section.keyname}, like
+C{general.verbose} in the example above. In that case, C{general} is the
+name of the configuration section, and C{verbose} is the name of the key.
+If the name of the section is omitted, it defaults to C{general}, so
+C{general.verbose} can be referred to as C{verbose}:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;general.verbose&quot;</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>User-level configuration is stored in C{~/.igraphrc} per default on Linux
+and Mac OS X systems, or in C{C:Documents and Settingsusername.igraphrc}
+on Windows systems. However, this configuration is read only when C{igraph}
+is launched through its shell interface defined in L{igraph.app.shell}.
+This behaviour might change before version 1.0.</p>
+<p>The known configuration keys are presented below, sorted by section. When
+referring to them in program code, don’t forget to add the section name,
+expect in the case of section C{general}.</p>
+<p>These settings are all stored in section C{general}.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>B{shells}: the list of preferred Python shells to be used with the
+command-line C{igraph} script. The shells in the list are tried one
+by one until any of them is found on the system. C{igraph} functions
+are then imported into the main namespace of the shell and the shell
+is launched. Known shells and their respective class names to be
+used can be found in L{igraph.app.shell}. Example:
+C{IPythonShell, ClassicPythonShell}. This is the default, by the way.</p></li>
+<li><p>B{verbose}: whether L{igraph} should talk more than really necessary.
+For instance, if set to C{True}, some functions display progress bars.</p></li>
+</ul>
+</div></blockquote>
+<p>These settings specify the default values used by plotting functions.
+They are all stored in section C{plotting}.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>B{backend}: either “cairo” if you want to use Cairo for plotting
+or “matplotlib” if you want to use the Matplotlib plotting backend.</p></li>
+<li><p>B{layout}: default graph layout algorithm to be used.</p></li>
+<li><p>B{mark_groups}: whether to mark the clusters by polygons when
+plotting a clustering object.</p></li>
+<li><p>B{palette}: default palette to be used for converting integer
+numbers to colors. See L{colors.Palette} for more information.
+Valid palette names are stored in C{colors.palettes}.</p></li>
+<li><p>B{wrap_labels}: whether to try to wrap the labels of the
+vertices automatically if they don’t fit within the vertex.
+Default: C{False}.</p></li>
+</ul>
+</div></blockquote>
+<p>These settings specify options for external environments in which igraph is
+embedded (e.g., IPython and its Qt console). These settings are stored in
+section C{shell}.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>B{ipython.inlining.Plot}: whether to show instances of the
+L{Plot&lt;drawing.Plot&gt;} class
+inline in IPython’s console if the console supports it. Default: C{True}</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.Types">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Types</span></span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.Types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.Types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Static class for the implementation of custom getter/setter functions
+for configuration keys</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.Types.setboolean">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setboolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.Types.setboolean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.Types.setboolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a boolean value in the given configuration object.</p>
+<p>&#64;param obj: a configuration object
+&#64;param section: the section of the value to be set
+&#64;param key: the key of the value to be set
+&#64;param value: the value itself. C{0}, C{false}, C{no} and C{off}</p>
+<blockquote>
+<div><p>means false, C{1}, C{true}, C{yes} and C{on} means true,
+everything else results in a C{ValueError} being thrown.
+Values are case insensitive</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.Types.setfloat">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setfloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.Types.setfloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.Types.setfloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a float value in the given configuration object.</p>
+<p>Note that float values are converted to strings in the configuration
+object, which may lead to some precision loss.</p>
+<p>&#64;param obj: a configuration object
+&#64;param section: the section of the value to be set
+&#64;param key: the key of the value to be set
+&#64;param value: the value itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.Types.setint">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.Types.setint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.Types.setint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an integer value in the given configuration object.</p>
+<p>&#64;param obj: a configuration object
+&#64;param section: the section of the value to be set
+&#64;param key: the key of the value to be set
+&#64;param value: the value itself.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.filename">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#igraph.configuration.Configuration.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the filename associated to the object.</p>
+<p>It is usually the name of the configuration file that was used when
+creating the object. L{Configuration.load} always overwrites it with
+the filename given to it. If C{None}, the configuration was either
+created from scratch or it was updated from a stream without name
+information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.has_key">
+<span class="sig-name descname"><span class="pre">has_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.has_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.has_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the configuration has a given key.</p>
+<p>&#64;param item: the key being sought</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the single instance of the configuration object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the configuration from the given file.</p>
+<dl class="simple">
+<dt>&#64;param stream: name of a file or a file object. The configuration will be loaded</dt><dd><p>from here. Can be omitted, in this case, the user-level configuration is
+loaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.configuration.Configuration.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#Configuration.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.Configuration.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the configuration.</p>
+<dl class="simple">
+<dt>&#64;param stream: name of a file or a file object. The configuration will be saved</dt><dd><p>there. Can be omitted, in this case, the user-level configuration file will
+be overwritten.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.configuration.get_user_config_file">
+<span class="sig-prename descclassname"><span class="pre">igraph.configuration.</span></span><span class="sig-name descname"><span class="pre">get_user_config_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#get_user_config_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.get_user_config_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the path where the user-level configuration file is stored</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.configuration.init">
+<span class="sig-prename descclassname"><span class="pre">igraph.configuration.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/configuration.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.configuration.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default mechanism to initiate igraph configuration</p>
+<p>This method loads the user-specific configuration file from the
+user’s home directory, or if it does not exist, creates a default
+configuration.</p>
+<p>The method is safe to be called multiple times, it will not parse
+the configuration file twice.</p>
+<p>&#64;return: the L{Configuration} object loaded or created.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-cut-module">
+<h2>igraph.cut module<a class="headerlink" href="#igraph-cut-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.datatypes">
+<span id="igraph-datatypes-module"></span><h2>igraph.datatypes module<a class="headerlink" href="#module-igraph.datatypes" title="Permalink to this headline">¶</a></h2>
+<p>Additional auxiliary data types</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.datatypes.</span></span><span class="sig-name descname"><span class="pre">Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/datatypes.html#Matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.datatypes.Matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simple matrix data type.</p>
+<p>Of course there are much more advanced matrix data types for Python (for
+instance, the C{ndarray} data type of Numeric Python) and this implementation
+does not want to compete with them. The only role of this data type is to
+provide a convenient interface for the matrices returned by the C{Graph}
+object (for instance, allow indexing with tuples in the case of adjacency
+matrices and so on).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.Fill">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/datatypes.html#Matrix.Fill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.datatypes.Matrix.Fill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a matrix filled with the given value</p>
+<p>&#64;param value: the value to be used
+&#64;keyword shape: the shape of the matrix. Can be a single integer,</p>
+<blockquote>
+<div><p>two integers or a tuple. If a single integer is
+given here, the matrix is assumed to be square-shaped.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.Identity">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/datatypes.html#Matrix.Identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.datatypes.Matrix.Identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an identity matrix.</p>
+<dl class="simple">
+<dt>&#64;keyword shape: the shape of the matrix. Can be a single integer,</dt><dd><p>two integers or a tuple. If a single integer is
+given here, the matrix is assumed to be square-shaped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.Zero">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/datatypes.html#Matrix.Zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.datatypes.Matrix.Zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a matrix filled with zeros.</p>
+<dl class="simple">
+<dt>&#64;keyword shape: the shape of the matrix. Can be a single integer,</dt><dd><p>two integers or a tuple. If a single integer is
+given here, the matrix is assumed to be square-shaped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#igraph.datatypes.Matrix.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the data stored in the matrix as a list of lists</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/datatypes.html#Matrix.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.datatypes.Matrix.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum of the matrix along the given dimension</p>
+<dl class="simple">
+<dt>&#64;param dim: the dimension. 0 means determining the column maximums, 1 means</dt><dd><p>determining the row maximums. If C{None}, the global maximum is
+returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/datatypes.html#Matrix.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.datatypes.Matrix.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the minimum of the matrix along the given dimension</p>
+<dl class="simple">
+<dt>&#64;param dim: the dimension. 0 means determining the column minimums, 1 means</dt><dd><p>determining the row minimums. If C{None}, the global minimum is
+returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.datatypes.Matrix.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#igraph.datatypes.Matrix.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shape of the matrix as a tuple</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-igraph.formula">
+<span id="igraph-formula-module"></span><h2>igraph.formula module<a class="headerlink" href="#module-igraph.formula" title="Permalink to this headline">¶</a></h2>
+<p>Implementation of L{igraph.Graph.Formula()}.</p>
+<p>You should use this module directly only if you have a very strong reason
+to do so. In almost all cases, you are better off with calling
+L{igraph.Graph.Formula()}.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.formula.construct_graph_from_formula">
+<span class="sig-prename descclassname"><span class="pre">igraph.formula.</span></span><span class="sig-name descname"><span class="pre">construct_graph_from_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/formula.html#construct_graph_from_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.formula.construct_graph_from_formula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Graph.Formula(formula = None, attr = “name”, simplify = True)</p>
+<p>Generates a graph from a graph formula</p>
+<p>A graph formula is a simple string representation of a graph.
+It is very handy for creating small graphs quickly. The string
+consists of vertex names separated by edge operators. An edge
+operator is a sequence of dashes (C{-}) that may or may not
+start with an arrowhead (C{&lt;} at the beginning of the sequence
+or C{&gt;} at the end of the sequence). The edge operators can
+be arbitrarily long, i.e., you may use as many dashes to draw
+them as you like. This makes a total of four different edge
+operators:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>C{—–} makes an undirected edge</p></li>
+<li><p>C{&lt;—-} makes a directed edge pointing from the vertex
+on the right hand side of the operator to the vertex on
+the left hand side</p></li>
+<li><p>C{—-&gt;} is the opposite of C{&lt;—-}</p></li>
+<li><p>C{&lt;—&gt;} creates a mutual directed edge pair between
+the two vertices</p></li>
+</ul>
+</div></blockquote>
+<p>If you only use the undirected edge operator (C{—–}),
+the graph will be undirected. Otherwise it will be directed.
+Vertex names used in the formula will be assigned to the
+C{name} vertex attribute of the graph.</p>
+<p>Some simple examples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">igraph</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">())</span>          <span class="c1"># empty graph</span>
+<span class="go">IGRAPH UN-- 0 0 --</span>
+<span class="go">+ attr: name (v)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s2">&quot;A-B&quot;</span><span class="p">)</span>        <span class="c1"># undirected graph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="go">[&#39;A&#39;, &#39;B&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">IGRAPH UN-- 2 1 --</span>
+<span class="go">+ attr: name (v)</span>
+<span class="go">+ edges (vertex names):</span>
+<span class="go">A--B</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">get_edgelist</span><span class="p">()</span>
+<span class="go">[(0, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g2</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s2">&quot;A-----------B&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g2</span><span class="o">.</span><span class="n">isomorphic</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s2">&quot;A  ---&gt;  B&quot;</span><span class="p">)</span> <span class="c1"># directed graph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="go">[&#39;A&#39;, &#39;B&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">IGRAPH DN-- 2 1 --</span>
+<span class="go">+ attr: name (v)</span>
+<span class="go">+ edges (vertex names):</span>
+<span class="go">A-&gt;B</span>
+</pre></div>
+</div>
+<p>If you have may disconnected componnets, you can separate them
+with commas. You can also specify isolated vertices:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s2">&quot;A--B, C--D, E--F, G--H, I, J, K&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]))</span>
+<span class="go">A, B, C, D, E, F, G, H, I, J, K</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">connected_components</span><span class="p">()</span><span class="o">.</span><span class="n">membership</span>
+<span class="go">[0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6]</span>
+</pre></div>
+</div>
+<p>The colon (C{:}) operator can be used to specify vertex sets.
+If an edge operator connects two vertex sets, then every vertex
+from the first vertex set will be connected to every vertex in
+the second set:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s2">&quot;A:B:C:D --- E:F:G&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">isomorphic</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">Full_Bipartite</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note that you have to quote vertex names if they include spaces
+or special characters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">Formula</span><span class="p">(</span><span class="s1">&#39;&quot;this is&quot; +- &quot;a silly&quot; -+ &quot;graph here&quot;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="go">[&#39;this is&#39;, &#39;a silly&#39;, &#39;graph here&#39;]</span>
+</pre></div>
+</div>
+<p>&#64;param formula: the formula itself
+&#64;param attr: name of the vertex attribute where the vertex names</p>
+<blockquote>
+<div><p>will be stored</p>
+</div></blockquote>
+<p>&#64;param simplify: whether the simplify the constructed graph
+&#64;return: the constructed graph:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-igraph.k_dense_network">
+<span id="igraph-k-dense-network-module"></span><h2>igraph.k_dense_network module<a class="headerlink" href="#module-igraph.k_dense_network" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.k_dense_network.Classname">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.k_dense_network.</span></span><span class="sig-name descname"><span class="pre">Classname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/k_dense_network.html#Classname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.k_dense_network.Classname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.k_dense_network.Classname.addEdge">
+<span class="sig-name descname"><span class="pre">addEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/k_dense_network.html#Classname.addEdge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.k_dense_network.Classname.addEdge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.k_dense_network.Classname.calling_function">
+<span class="sig-name descname"><span class="pre">calling_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/k_dense_network.html#Classname.calling_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.k_dense_network.Classname.calling_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.k_dense_network.Classname.create_result">
+<span class="sig-name descname"><span class="pre">create_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/k_dense_network.html#Classname.create_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.k_dense_network.Classname.create_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.k_dense_network.Classname.findCliques">
+<span class="sig-name descname"><span class="pre">findCliques</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/k_dense_network.html#Classname.findCliques"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.k_dense_network.Classname.findCliques" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.k_dense_network.Classname.is_clique">
+<span class="sig-name descname"><span class="pre">is_clique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/k_dense_network.html#Classname.is_clique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.k_dense_network.Classname.is_clique" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-layout-module">
+<h2>igraph.layout module<a class="headerlink" href="#igraph-layout-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-matching-module">
+<h2>igraph.matching module<a class="headerlink" href="#igraph-matching-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.minimum_frequency_bands">
+<span id="igraph-minimum-frequency-bands-module"></span><h2>igraph.minimum_frequency_bands module<a class="headerlink" href="#module-igraph.minimum_frequency_bands" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-seq-module">
+<h2>igraph.seq module<a class="headerlink" href="#igraph-seq-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="igraph-sparse-matrix-module">
+<h2>igraph.sparse_matrix module<a class="headerlink" href="#igraph-sparse-matrix-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.statistics">
+<span id="igraph-statistics-module"></span><h2>igraph.statistics module<a class="headerlink" href="#module-igraph.statistics" title="Permalink to this headline">¶</a></h2>
+<p>Statistics related stuff in igraph</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.statistics.FittedPowerLaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">FittedPowerLaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">continuous</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#FittedPowerLaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.FittedPowerLaw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Result of fitting a power-law to a vector of samples</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">power_law_fit</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>                   
+<span class="go">FittedPowerLaw(continuous=False, alpha=2.42..., xmin=3.0, L=-7.54..., D=0.21..., p=0.993...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>            
+<span class="go">Fitted power-law distribution on discrete data</span>
+
+<span class="go">Exponent (alpha)  = 2.42...</span>
+<span class="go">Cutoff (xmin)     = 3.000000</span>
+
+<span class="go">Log-likelihood    = -7.54...</span>
+
+<span class="go">H0: data was drawn from the fitted distribution</span>
+
+<span class="go">KS test statistic = 0.21...</span>
+<span class="go">p-value           = 0.993...</span>
+
+<span class="go">H0 could not be rejected at significance level 0.05</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">alpha</span>             
+<span class="go">2.42...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">xmin</span>
+<span class="go">3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">continuous</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.FittedPowerLaw.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">significance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#FittedPowerLaw.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.FittedPowerLaw.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the summary of the power law fit.</p>
+<dl class="simple">
+<dt>&#64;param significance: the significance level of the Kolmogorov-Smirnov test</dt><dd><p>used to decide whether the input data could have come from the fitted
+distribution</p>
+</dd>
+</dl>
+<p>&#64;return: the summary as a string</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">Histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bin_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#Histogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.Histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generic histogram class for real numbers</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>     <span class="c1"># Initializing, bin width = 5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">&lt;&lt;</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>     <span class="c1"># Adding more items</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="go">N = 10, mean +- sd: 4.8000 +- 2.9740</span>
+<span class="go">[ 0,  5): **** (4)</span>
+<span class="go">[ 5, 10): ****** (6)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#Histogram.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.Histogram.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a single number to the histogram.</p>
+<p>&#64;param num: the number to be added
+&#64;param repeat: number of repeated additions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.add_many">
+<span class="sig-name descname"><span class="pre">add_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#Histogram.add_many"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.Histogram.add_many" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a single number or the elements of an iterable to the histogram.</p>
+<p>&#64;param data: the data to be added</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.bins">
+<span class="sig-name descname"><span class="pre">bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#Histogram.bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.Histogram.bins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator returning the bins of the histogram in increasing order</p>
+<dl class="simple">
+<dt>&#64;return: a tuple with the following elements: left bound, right bound,</dt><dd><p>number of elements in the bin</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#Histogram.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.Histogram.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the collected data</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.mean">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean</span></span><a class="headerlink" href="#igraph.statistics.Histogram.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mean of the elements in the histogram</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.n">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><a class="headerlink" href="#igraph.statistics.Histogram.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of elements in the histogram</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.sd">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sd</span></span><a class="headerlink" href="#igraph.statistics.Histogram.sd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the standard deviation of the elements in
+the histogram</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.to_string">
+<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">78</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_bars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_counts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#Histogram.to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.Histogram.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the string representation of the histogram.</p>
+<dl class="simple">
+<dt>&#64;param max_width: the maximal width of each line of the string</dt><dd><p>This value may not be obeyed if it is too small.</p>
+</dd>
+</dl>
+<p>&#64;param show_bars: specify whether the histogram bars should be shown
+&#64;param show_counts: specify whether the histogram counts should be</p>
+<blockquote>
+<div><p>shown. If both I{show_bars} and I{show_counts} are C{False},
+only a general descriptive statistics (number of elements, mean and
+standard deviation) is shown.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.Histogram.var">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var</span></span><a class="headerlink" href="#igraph.statistics.Histogram.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the variance of the elements in the histogram</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">RunningMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#RunningMean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.RunningMean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Running mean calculator.</p>
+<p>This class can be used to calculate the mean of elements from a
+list, tuple, iterable or any other data source. The mean is
+calculated on the fly without explicitly summing the values,
+so it can be used for data sets with arbitrary item count. Also
+capable of returning the standard deviation (also calculated on
+the fly)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#RunningMean.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.RunningMean.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the given value to the elements from which we calculate
+the mean and the standard deviation.</p>
+<p>&#64;param value: the element to be added
+&#64;param repeat: number of repeated additions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.add_many">
+<span class="sig-name descname"><span class="pre">add_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#RunningMean.add_many"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.RunningMean.add_many" title="Permalink to this definition">¶</a></dt>
+<dd><p>RunningMean.add(values)</p>
+<p>Adds the values in the given iterable to the elements from
+which we calculate the mean. Can also accept a single number.
+The left shift (C{&lt;&lt;}) operator is aliased to this function,
+so you can use it to add elements as well:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rm</span><span class="o">=</span><span class="n">RunningMean</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rm</span> <span class="o">&lt;&lt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rm</span><span class="o">.</span><span class="n">result</span>               
+<span class="go">(2.5, 1.290994...)</span>
+</pre></div>
+</div>
+<p>&#64;param values: the element(s) to be added
+&#64;type values: iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#RunningMean.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.RunningMean.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the running mean calculator.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.mean">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean</span></span><a class="headerlink" href="#igraph.statistics.RunningMean.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current mean</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.result">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result</span></span><a class="headerlink" href="#igraph.statistics.RunningMean.result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current mean and standard deviation as a tuple</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.sd">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sd</span></span><a class="headerlink" href="#igraph.statistics.RunningMean.sd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current standard deviation</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="igraph.statistics.RunningMean.var">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var</span></span><a class="headerlink" href="#igraph.statistics.RunningMean.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current variation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.statistics.mean">
+<span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mean of an iterable.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mean</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
+<span class="go">5.75</span>
+</pre></div>
+</div>
+<p>&#64;param xs: an iterable yielding numbers.
+&#64;return: the mean of the numbers provided by the iterable.</p>
+<p>&#64;see: RunningMean() if you also need the variance or the standard deviation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.statistics.median">
+<span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the median of an unsorted or sorted numeric vector.</p>
+<p>&#64;param xs: the vector itself.
+&#64;param sort: whether to sort the vector. If you know that the vector is</p>
+<blockquote>
+<div><p>sorted already, pass C{False} here.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;return: the median, which will always be a float, even if the vector</dt><dd><p>contained integers originally.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.statistics.percentile">
+<span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">percentile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(25,</span> <span class="pre">50,</span> <span class="pre">75)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#percentile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.percentile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the pth percentile of an unsorted or sorted numeric vector.</p>
+<p>This is equivalent to calling quantile(xs, p/100.0); see L{quantile}
+for more details on the calculation.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">percentile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">26.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">perc</span> <span class="ow">in</span> <span class="n">percentile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">perc</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">15.00</span>
+<span class="go">17.50</span>
+<span class="go">35.00</span>
+<span class="go">45.00</span>
+<span class="go">50.00</span>
+</pre></div>
+</div>
+<p>&#64;param xs: the vector itself.
+&#64;param p: the percentile we are looking for. It may also be a list if you</p>
+<blockquote>
+<div><p>want to calculate multiple quantiles with a single call. The default
+value calculates the 25th, 50th and 75th percentile.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param sort: whether to sort the vector. If you know that the vector is</dt><dd><p>sorted already, pass C{False} here.</p>
+</dd>
+<dt>&#64;return: the pth percentile, which will always be a float, even if the vector</dt><dd><p>contained integers originally. If p is a list, the result will also be a
+list containing the percentiles for each item in the list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.statistics.power_law_fit">
+<span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">power_law_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#power_law_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.power_law_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fitting a power-law distribution to empirical data</p>
+<p>&#64;param data: the data to fit, a list containing integer values
+&#64;param xmin: the lower bound for fitting the power-law. If C{None},</p>
+<blockquote>
+<div><p>the optimal xmin value will be estimated as well. Zero means that
+the smallest possible xmin value will be used.</p>
+</div></blockquote>
+<dl>
+<dt>&#64;param method: the fitting method to use. The following methods are</dt><dd><p>implemented so far:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>C{continuous}, C{hill}: exact maximum likelihood estimation
+when the input data comes from a continuous scale. This is
+known as the Hill estimator. The statistical error of
+this estimator is M{(alpha-1) / sqrt(n)}, where alpha is the
+estimated exponent and M{n} is the number of data points above
+M{xmin}. The estimator is known to exhibit a small finite
+sample-size bias of order M{O(n^-1)}, which is small when
+M{n &gt; 100}. igraph will try to compensate for the finite sample
+size if n is small.</p></li>
+<li><p>C{discrete}: exact maximum likelihood estimation when the
+input comes from a discrete scale (see Clauset et al among the
+references).</p></li>
+<li><p>C{auto}: exact maximum likelihood estimation where the continuous
+method is used if the input vector contains at least one fractional
+value and the discrete method is used if the input vector contains
+integers only.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>&#64;param p_precision: desired precision of the p-value calculation. The</dt><dd><p>precision ultimately depends on the number of resampling attempts. The
+number of resampling trials is determined by 0.25 divided by the square
+of the required precision. For instance, a required precision of 0.01
+means that 2500 samples will be drawn.</p>
+</dd>
+<dt>&#64;return: a L{FittedPowerLaw} object. The fitted C{xmin} value and the</dt><dd><p>power-law exponent can be queried from the C{xmin} and C{alpha}
+properties of the returned object.</p>
+</dd>
+</dl>
+<p>&#64;newfield ref: Reference
+&#64;ref: MEJ Newman: Power laws, Pareto distributions and Zipf’s law.</p>
+<blockquote>
+<div><p>Contemporary Physics 46, 323-351 (2005)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;ref: A Clauset, CR Shalizi, MEJ Newman: Power-law distributions</dt><dd><p>in empirical data. E-print (2007). arXiv:0706.1062</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.statistics.quantile">
+<span class="sig-prename descclassname"><span class="pre">igraph.statistics.</span></span><span class="sig-name descname"><span class="pre">quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.25,</span> <span class="pre">0.5,</span> <span class="pre">0.75)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/statistics.html#quantile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.statistics.quantile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the qth quantile of an unsorted or sorted numeric vector.</p>
+<p>There are a number of different ways to calculate the sample quantile. The
+method implemented by igraph is the one recommended by NIST. First we
+calculate a rank n as q(N+1), where N is the number of items in xs, then we
+split n into its integer component k and decimal component d. If k &lt;= 1,
+we return the first element; if k &gt;= N, we return the last element,
+otherwise we return the linear interpolation between xs[k-1] and xs[k]
+using a factor d.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">quantile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mf">0.4</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">26.0</span>
+</pre></div>
+</div>
+<p>&#64;param xs: the vector itself.
+&#64;param q: the quantile we are looking for. It may also be a list if you</p>
+<blockquote>
+<div><p>want to calculate multiple quantiles with a single call. The default
+value calculates the 25th, 50th and 75th percentile.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param sort: whether to sort the vector. If you know that the vector is</dt><dd><p>sorted already, pass C{False} here.</p>
+</dd>
+<dt>&#64;return: the qth quantile, which will always be a float, even if the vector</dt><dd><p>contained integers originally. If q is a list, the result will also be a
+list containing the quantiles for each item in the list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="igraph-structural-module">
+<h2>igraph.structural module<a class="headerlink" href="#igraph-structural-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph.summary">
+<span id="igraph-summary-module"></span><h2>igraph.summary module<a class="headerlink" href="#module-igraph.summary" title="Permalink to this headline">¶</a></h2>
+<p>Summary representation of a graph.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.summary.GraphSummary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.summary.</span></span><span class="sig-name descname"><span class="pre">GraphSummary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">78</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_list_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">99999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_graph_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_vertex_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_edge_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/summary.html#GraphSummary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.summary.GraphSummary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Summary representation of a graph.</p>
+<p>The summary representation includes a header line and the list of
+edges. The header line consists of C{IGRAPH}, followed by a
+four-character long code, the number of vertices, the number of
+edges, two dashes (C{–}) and the name of the graph (i.e.
+the contents of the C{name} attribute, if any). For instance,
+a header line may look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IGRAPH</span> <span class="n">U</span><span class="o">---</span> <span class="mi">4</span> <span class="mi">5</span> <span class="o">--</span>
+</pre></div>
+</div>
+<p>The four-character code describes some basic properties of the
+graph. The first character is C{U} if the graph is undirected,
+C{D} if it is directed. The second letter is C{N} if the graph
+has a vertex attribute called C{name}, or a dash otherwise. The
+third letter is C{W} if the graph is weighted (i.e. it has an
+edge attribute called C{weight}), or a dash otherwise. The
+fourth letter is C{B} if the graph has a vertex attribute called
+C{type}; this is usually used for bipartite graphs.</p>
+<p>Edges may be presented as an ordinary edge list or an adjacency
+list. By default, this depends on the number of edges; however,
+you can control it with the appropriate constructor arguments.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.summary.summary">
+<span class="sig-prename descclassname"><span class="pre">igraph.summary.</span></span><span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/summary.html#summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.summary.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a summary of object o to a given stream</p>
+<p>Positional and keyword arguments not explicitly mentioned here are passed
+on to the underlying C{summary()} method of the object if it has any.</p>
+<p>&#64;param obj: the object about which a human-readable summary is requested.
+&#64;param stream: the stream to be used. If C{None}, the standard output</p>
+<blockquote>
+<div><p>will be used.</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-igraph.utils">
+<span id="igraph-utils-module"></span><h2>igraph.utils module<a class="headerlink" href="#module-igraph.utils" title="Permalink to this headline">¶</a></h2>
+<p>Utility functions that cannot be categorised anywhere else.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="igraph.utils.multidict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">igraph.utils.</span></span><span class="sig-name descname"><span class="pre">multidict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableMapping</span></code></p>
+<p>A dictionary-like object that is customized to deal with multiple
+values for the same key.</p>
+<p>Each value in this dictionary will be a list. Methods which emulate
+the methods of a standard Python <code class="docutils literal notranslate"><span class="pre">dict</span></code> object will return or manipulate
+the first items of the lists only. Special methods are provided to
+deal with keys having multiple values.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <cite>value</cite> to the list of items associated to <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">multidict</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="s2">&quot;ham&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;spam&quot;</span><span class="p">]</span>
+<span class="go">&#39;ham&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="s2">&quot;eggs&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">)</span>
+<span class="go">[&#39;ham&#39;, &#39;eggs&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all the items from the multidict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an arbitrary item associated to the given <code class="docutils literal notranslate"><span class="pre">key</span></code>. If <code class="docutils literal notranslate"><span class="pre">key</span></code>
+does not exist or has zero associated items, <code class="docutils literal notranslate"><span class="pre">default</span></code> will be
+returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.getlist">
+<span class="sig-name descname"><span class="pre">getlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict.getlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.getlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of values for the given <code class="docutils literal notranslate"><span class="pre">key</span></code>. An empty list will
+be returned if there is no such key.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.iterlists">
+<span class="sig-name descname"><span class="pre">iterlists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict.iterlists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.iterlists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over <code class="docutils literal notranslate"><span class="pre">(key,</span> <span class="pre">values)</span></code> pairs where <code class="docutils literal notranslate"><span class="pre">values</span></code> is the list
+of values associated with <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.lists">
+<span class="sig-name descname"><span class="pre">lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#multidict.lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of <code class="docutils literal notranslate"><span class="pre">(key,</span> <span class="pre">values)</span></code> pairs where <code class="docutils literal notranslate"><span class="pre">values</span></code> is the list
+of values associated with <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="igraph.utils.multidict.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">mapping/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span><a class="reference internal" href="_modules/igraph/utils.html#multidict.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.multidict.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
+If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
+In either case, this is followed by: for k, v in F.items(): D[k] = v</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.utils.named_temporary_file">
+<span class="sig-prename descclassname"><span class="pre">igraph.utils.</span></span><span class="sig-name descname"><span class="pre">named_temporary_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#named_temporary_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.named_temporary_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager that creates a named temporary file and
+returns its name.</p>
+<p>All parameters are passed on to <code class="docutils literal notranslate"><span class="pre">tempfile.mkstemp</span></code>, see
+its documentation for more info.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.utils.numpy_to_contiguous_memoryview">
+<span class="sig-prename descclassname"><span class="pre">igraph.utils.</span></span><span class="sig-name descname"><span class="pre">numpy_to_contiguous_memoryview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#numpy_to_contiguous_memoryview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.numpy_to_contiguous_memoryview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a NumPy array or matrix into a contiguous memoryview object
+that is suitable to be forwarded to the Graph constructor.</p>
+<p>This is used internally to allow us to use a NumPy array or matrix
+directly when constructing a Graph.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.utils.rescale">
+<span class="sig-prename descclassname"><span class="pre">igraph.utils.</span></span><span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#rescale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.rescale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescales a list of numbers into a given range.</p>
+<p><code class="docutils literal notranslate"><span class="pre">out_range</span></code> gives the range of the output values; by default, the minimum
+of the original numbers in the list will be mapped to the first element
+in the output range and the maximum will be mapped to the second element.
+Elements between the minimum and maximum values in the input list will be
+interpolated linearly between the first and second values of the output
+range.</p>
+<p><code class="docutils literal notranslate"><span class="pre">in_range</span></code> may be used to override which numbers are mapped to the first
+and second values of the output range. This must also be a tuple, where
+the first element will be mapped to the first element of the output range
+and the second element to the second.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">clamp</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, elements which are outside the given <code class="docutils literal notranslate"><span class="pre">out_range</span></code>
+after rescaling are clamped to the output range to ensure that no number
+will be outside <code class="docutils literal notranslate"><span class="pre">out_range</span></code> in the result.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">scale</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, it will be called for every element of <code class="docutils literal notranslate"><span class="pre">values</span></code>
+and the rescaling will take place on the results instead. This can be used,
+for instance, to transform the logarithm of the original values instead of
+the actual values. A typical use-case is to map a range of values to color
+identifiers on a logarithmic scale. Scaling also applies to the <code class="docutils literal notranslate"><span class="pre">in_range</span></code>
+parameter if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_range</strong> – the range of output values</p></li>
+<li><p><strong>in_range</strong> – the range of the input values; this is the range that is mapped
+to <code class="docutils literal notranslate"><span class="pre">out_range</span></code>. <code class="docutils literal notranslate"><span class="pre">None</span></code> means to use the minimum and maximum of
+the input, respectively.</p></li>
+<li><p><strong>clamp</strong> – specifies what to do when an input value falls outside <code class="docutils literal notranslate"><span class="pre">in_range</span></code>.
+<code class="docutils literal notranslate"><span class="pre">True</span></code> means to clamp the value to the bounds of <code class="docutils literal notranslate"><span class="pre">in_range</span></code>,
+<code class="docutils literal notranslate"><span class="pre">False</span></code> means not to clamp.</p></li>
+<li><p><strong>scale</strong> – an optional transformation to perform on the input values before
+mapping them to the output range.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="go">[0.0, 2.0, 4.0, 6.0, 8.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="go">[2.0, 4.0, 6.0, 8.0, 10.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[-2.0, 0.0, 2.0, 4.0, 6.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">clamp</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">[0.0, 0.0, 2.0, 4.0, 4.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[2.0, 2.0, 2.0, 2.0, 2.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="n">log10</span><span class="p">)</span>
+<span class="go">[0.0, 2.0, 4.0, 6.0, 8.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescale</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="n">log10</span><span class="p">)</span>
+<span class="go">[-2.0, 0.0, 2.0, 4.0, 6.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.utils.safemax">
+<span class="sig-prename descclassname"><span class="pre">igraph.utils.</span></span><span class="sig-name descname"><span class="pre">safemax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#safemax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.safemax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safer variant of <code class="docutils literal notranslate"><span class="pre">max()</span></code> that returns a default value if the iterable
+is empty.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">safemax</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="go">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safemax</span><span class="p">([])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safemax</span><span class="p">((),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="igraph.utils.safemin">
+<span class="sig-prename descclassname"><span class="pre">igraph.utils.</span></span><span class="sig-name descname"><span class="pre">safemin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/igraph/utils.html#safemin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#igraph.utils.safemin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safer variant of <code class="docutils literal notranslate"><span class="pre">min()</span></code> that returns a default value if the iterable
+is empty.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">safemin</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="go">-5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safemin</span><span class="p">([])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safemin</span><span class="p">((),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-igraph.version">
+<span id="igraph-version-module"></span><h2>igraph.version module<a class="headerlink" href="#module-igraph.version" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-igraph">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-igraph" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="igraph.app.html" class="btn btn-neutral float-right" title="igraph.app package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="igraph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Anurag.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

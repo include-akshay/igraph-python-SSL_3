@@ -95,6 +95,12 @@ class CairoPlot:
         palette=None,
         background=None,
     ):
+        print("Hello, we caught you ?? ")
+        # yes_or_no=input("Do you want to save the plot also (y/n) : ")
+        # if(yes_or_no== 'Y' or yes_or_no=='y'):
+        #     self.write_svg("save_svg_test_3")
+
+
         """Creates a new plot.
 
         @param target: the target surface to write to. It can be one of the
@@ -154,10 +160,16 @@ class CairoPlot:
             self._filename = target
             _, ext = os.path.splitext(target)
             ext = ext.lower()
-            if ext == ".pdf":
-                self._surface = cairo.PDFSurface(
-                    target, self.bbox.width, self.bbox.height
-                )
+            if ext == ".pdf" or ext== "":
+                if ext==".pdf":
+                    target=target.replace(".pdf",".svg")
+                else:
+                    target=target+".svg"
+                self._surface = cairo.SVGSurface(
+                    target, self.bbox.width, self.bbox.height)
+                #cairo.PDFSurface(
+                    #target, self.bbox.width, self.bbox.height
+                #)
             elif ext == ".ps" or ext == ".eps":
                 self._surface = cairo.PSSurface(
                     target, self.bbox.width, self.bbox.height
@@ -302,7 +314,7 @@ class CairoPlot:
                 with named_temporary_file(prefix="igraph", suffix=".png") as fname:
                     self._surface.write_to_png(fname)
                     return None
-
+                    
             fname = fname or self._filename
             if fname is None:
                 raise ValueError("no file name is known for the surface and none given")
@@ -313,8 +325,14 @@ class CairoPlot:
 
         if fname is not None:
             warn("filename is ignored for surfaces other than ImageSurface")
-
+            # fname=fname.replace(".pdf", ".svg")
+            # print(f"This is the filename :: {fname}")
+            # self._filename=fname
+        #fname=fname.replace(".pdf", ".svg")
         self._ctx.show_page()
+        #self.write_svg(f"{fname}.svg")
+
+        
         self._surface.finish()
 
     def _repr_svg_(self):
