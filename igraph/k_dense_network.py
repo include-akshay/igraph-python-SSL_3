@@ -58,5 +58,5 @@ class Classname:
 		
 	def calling_function(self,i,l,s):
 		self.findCliques(i,l,s)
-		return self.result
+		return len(self.result),self.result
 

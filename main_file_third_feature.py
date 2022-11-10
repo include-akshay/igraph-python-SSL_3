@@ -7,6 +7,4 @@ obj.addEdge(3,1)
 obj.addEdge(4,3)
 obj.addEdge(4,5)
 obj.addEdge(5,3)
-final_result=obj.calling_function(0,1,3)
-
-print(final_result)
+count_of_cliques,final_result=obj.calling_function(0,1,3)
