@@ -1,0 +1,5 @@
+igraph
+numpy
+pip
+pkg_resources
+setuptools
