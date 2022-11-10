@@ -11,5 +11,4 @@ UG.add_edge('b','c')
 UG.add_edge('b','a')
 
 layout = UG.layout_kamada_kawai()
-#UG.write_svg("desk_test")
 plot(UG,"nitesh.pdf",layout = layout)

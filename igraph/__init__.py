@@ -89,11 +89,9 @@ from igraph.minimum_frequency_bands import (
     minimum_frequency_bands,
 )
 
-# from igraph.clique import (
-
-#     is_clique,
-#     print_cli,
-#     findCliques,
+from igraph.k_dense_network import (
+    Classname,
+)
     
 
 # )
@@ -1218,9 +1216,9 @@ __all__ = (
     'write',
     'Number_of_sources',
     'minimum_frequency_bands',
-    # 'is_clique',
-    # 'findCliques',
-    # 'print_cli',
+    'Classname',
+
+    
 
 
     # enums and stuff
