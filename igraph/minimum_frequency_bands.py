@@ -93,7 +93,7 @@ class minimum_frequency_bands:
             name_of_svg=name_of_svg.replace(".", "")
             name_of_svg=name_of_svg.replace(":", "")
             
-            #f=open("graph1.svg", "x")
+
             self.graph_to_plot.write_svg(f"file{name_of_svg}.svg", layout=layout, colors =[color_dict[i] for i in result])
 
         return(len(set(result)), result, self.graph_to_plot)
