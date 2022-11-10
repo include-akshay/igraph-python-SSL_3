@@ -1,0 +1,13 @@
+Metadata-Version: 1.2
+Name: igraph
+Version: 1.1.3
+Summary: (Added three functionalities to enhance igraph)
+Home-page: https://github.com/include-akshay/igraph-python-SSL_3
+Author: Anurag/Akshay/Nitesh
+Author-email: asharma@yaiims.edu
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
