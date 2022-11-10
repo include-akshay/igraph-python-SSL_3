@@ -88,7 +88,7 @@ class Number_of_sources:
         main_list=[]
         for i in self.graph[v]:
             if visited[i]==False:
-                list=self.DFSUtil(i,visited)
+                list=self.SCC_helper(i,visited)
                 for j in list:
                     main_list.append(j)
         main_list.append(v)
